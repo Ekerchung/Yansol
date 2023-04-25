@@ -12,7 +12,11 @@ import PayrollManagement from '../views/PayrollManagement'
 import PrePayroll from '../views/PrePayroll'
 import WorkerManagement from '../views/WorkerManagement'
 
-
+//解決點擊兩次element ui的麵包屑報錯
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
 
 export default new VueRouter({
         routes:[

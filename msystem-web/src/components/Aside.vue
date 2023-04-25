@@ -29,10 +29,6 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  },
   data(){
     return{
       menudata:[
@@ -138,24 +134,26 @@ export default {
     },
     //點擊菜單跳轉頁面
     clickMenu(item) {
-      // console.log(item)
       this.$router.push(item.path).catch(err => err);
+      //調用添加麵包削方法
+      this.$store.commit('menu/breadcrumb',item);
     }
   },
 
   computed: {
     //沒有子菜單
-    noChildren(){
+    noChildren() {
       return this.menudata.filter(item => !item.children);
     },
     //有子菜單
-    haschildren(){
+    haschildren() {
       return this.menudata.filter(item => item.children);
     },
-
+    //切換側邊欄收/折
     isCollapse() {
       return this.$store.state.menu.isCollapse
     },
+
   }
 }
 </script>

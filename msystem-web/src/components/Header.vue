@@ -2,7 +2,16 @@
   <div class="header-container">
     <div class="l-content">
       <el-button style="margin-right: 20px" @click="handleMenu" icon="el-icon-menu" size="mini"></el-button>
-      <span class="text">首頁</span>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item
+            v-for="item in breadcrumbData"
+            :to="{ path: item.path }"
+            :key="item.path"
+            :class="{ active: isActiveBreadcrumb(item)  }"
+        >
+          {{ item.label }}
+        </el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="r-content">
       <el-dropdown @command="handleClick">
@@ -36,7 +45,16 @@ export default {
         this.$router.push('/login')
       }
     },
-  }
+    //判斷麵包削的當前頁
+    isActiveBreadcrumb(item) {
+      console.log(this.$route.path);
+      return this.$route.path === item.path;
+    },
+  },
+  computed:{
+    //映射到store/menu.js中的breadcrumb方法
+    ...mapState('menu', ['breadcrumbData']),
+  },
 }
 </script>
 
@@ -64,14 +82,13 @@ export default {
   display: flex;
   align-items: center;
 }
-.header-container .l-content .el-breadcrumb__item .el-breadcrumb__inner {
+.header-container .l-content ::v-deep .el-breadcrumb__item .el-breadcrumb__inner {
   font-weight: normal;
 }
-.header-container .l-content .el-breadcrumb__item .el-breadcrumb__inner.is-link {
+.header-container .l-content ::v-deep .el-breadcrumb__item .el-breadcrumb__inner.is-link {
   color: #666;
 }
-.header-container .l-content .el-breadcrumb__item:last-child .el-breadcrumb__inner {
-  color: #fff;
+.header-container .l-content ::v-deep .el-breadcrumb__item.active .el-breadcrumb__inner {
+  color: #ffffff;
 }
-
 </style>
