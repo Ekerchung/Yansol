@@ -3,7 +3,7 @@ import Vue from 'vue'
 //引入Vuex
 import Vuex from 'vuex'
 import menu from './menu'
-import menu2 from './menu2'
+import data from './data'
 
 //應用Vuex插件
 Vue.use(Vuex)
@@ -19,6 +19,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     modules:{
         menu,
-        // menu2
+        data,
     },
 })
