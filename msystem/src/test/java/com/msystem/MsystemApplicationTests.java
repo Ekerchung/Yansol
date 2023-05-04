@@ -5,6 +5,9 @@ import com.msystem.service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -23,6 +26,8 @@ class MsystemApplicationTests {
     private OrderService orderService;
     @Autowired
     private ReturnGoodService returnGoodService;
+    @Autowired
+    private AccountService accountService;
 
     @Test
 //    @Transactional
@@ -47,9 +52,20 @@ class MsystemApplicationTests {
     void testEmployee() {
 //        List<Employee> employeeList = employeeService.queryAllEmployee();
 //        System.out.println(employeeList);
-        Optional<Employee> employee = employeeService.queryAllEmployeeById(5);
-        System.out.println(employee.orElse(null));
-
+//        Optional<Employee> employee = employeeService.queryEmployeeById(5);
+//        System.out.println(employee.orElse(null));
+//        Employee employee1 = new Employee();
+//        employee1.setGender("0");
+//        employee1.setEName("tes1");
+//        employeeService.updateEmployee(employee1);
+        int page = 0;
+        //默認每頁顯示10個數據
+        int size = 10;
+        //默認排序依照id
+        String sortBy = "eId";
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Employee> containing = employeeService.findByENameContainingOrAddressContainingOrPhoneContaining("新", "新", "新", pageable);
+        System.out.println(containing);
     }
     @Test
     @Transactional
@@ -67,6 +83,12 @@ class MsystemApplicationTests {
         System.out.println(returnGood.orElse(null));
         List<ReturnGood> returnGoodList = returnGoodService.queryAllReturnGood();
         System.out.println(returnGoodList);
+    }
+    @Test
+//    @Transactional
+    void testAccount() {
+        Account account = accountService.login("admin", "admin");
+        System.out.println(account);
     }
 
 }

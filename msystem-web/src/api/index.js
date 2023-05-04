@@ -15,3 +15,18 @@ export const getOrderData = () => {
 export const getReturnData = () => {
   return http.get('/returngood')
 }
+export const addEmployee = () => {
+  return http.post('/employee')
+}
+export const deleteEmployee = (id) => {
+  return http.delete(`/employee/${id}`)
+}
+export const updateEmployee = (data) => {
+  return http.put('/employee', data)
+}
+export const getEmployeePageData = (params) => {
+  return http.get('/page/employee/',{ params:  params })
+}
+export const userLogin = (params) => {
+  return http.get('/login', { params:  params })
+}

@@ -37,8 +37,8 @@ export default {
         fetchOrderData(context) {
             return getOrderData()
                 .then((response) => {
-                    console.log('調用了fetchOrderData')
-                    context.commit('setOrderData', response.data)
+                    console.log('調用了fetchOrderData');
+                    context.commit('setOrderData', response.data);
                 })
                 .catch((error) => {
                     console.error(error)
@@ -114,9 +114,9 @@ export default {
                 }
             }
             //將當月每個員工的收入依myChart3所需格式保存到map中
-            let mappedDataList = employeeDataList.map((item, index, arr) => {
+            let mappedDataList = employeeDataList.filter(e => e.total_sales_this_month !== 0).map((item, index, arr) => {
                 return {
-                    name: item.ename,
+                    name: item.name,
                     value: item.total_sales_this_month
                 };
             });
@@ -179,21 +179,27 @@ export default {
     mutations:{
         setGoodData(state, data) { // 添加goodData數據
             state.goodData = data;
+            console.log('調用了setGoodData')
         },
-        setCompanyData(state, year) { // 添加companyData數據
-            state.companyData = year;
+        setCompanyData(state, data) { // 添加companyData數據
+            state.companyData = data;
+            console.log('調用了setCompanyData')
         },
-        setEmployeeData(state, year) { // 添加employeeData數據
-            state.employeeData = year;
+        setEmployeeData(state, data) { // 添加employeeData數據
+            state.employeeData = data;
+            console.log('調用了setEmployeeData')
         },
         setOrderData(state, data) { // 添加orderData數據
             state.orderData = data;
+            console.log('調用了setOrderData')
         },
         setReturnData(state, data) { // 添加returnData數據
             state.returnData = data;
+            console.log('調用了setReturnData')
         },
         setCountData(state, data) { // 添加countData數據
             state.countData = data;
+            console.log('調用了setCountData')
         },
     },
     state:{

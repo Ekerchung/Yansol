@@ -1,6 +1,21 @@
+import {userLogin} from "@/api";
+
 export default {
     namespaced:true,
-    actions:{},
+    actions:{
+        fetchLogin(context,data) {
+            // console.log(data);
+            return userLogin(data)
+                .then((response) => {
+                    localStorage.setItem('token',response.data.token)
+                    return response.data;
+                })
+                .catch((error) => {
+                    console.log('menu.js',error)
+                    throw error;
+                })
+        },
+    },
     mutations:{
         handleMenu(state){
             // console.log('handleMenu被調用了');

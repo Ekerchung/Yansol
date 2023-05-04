@@ -4,6 +4,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import menu from './menu'
 import data from './data'
+import worker from './worker'
 
 //應用Vuex插件
 Vue.use(Vuex)
@@ -20,5 +21,6 @@ export default new Vuex.Store({
     modules:{
         menu,
         data,
+        worker,
     },
 })

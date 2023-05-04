@@ -1,8 +1,11 @@
 package com.msystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @Description: Employee的實體類容器
@@ -15,8 +18,14 @@ import javax.persistence.*;
 @Table(name = "t_employee")
 public class Employee {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int eId;
+    @JsonProperty("name")
     private String eName;
+    private String gender;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date birthday;
+    private String phone;
+    private String address;
 
 }

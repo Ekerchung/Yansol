@@ -1,6 +1,8 @@
 package com.msystem.service;
 
 import com.msystem.entity.Employee;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,5 +16,11 @@ import java.util.Optional;
 public interface EmployeeService {
     List<Employee> queryAllEmployee();
 
-    Optional<Employee> queryAllEmployeeById(Integer id);
+    Optional<Employee> queryEmployeeById(Integer id);
+    void updateEmployee(Employee emp);
+
+    void deleteEmployee(Integer id);
+
+    Page<Employee> queryEmployeeByPage(Pageable pageable);
+    Page<Employee> findByENameContainingOrAddressContainingOrPhoneContaining(String eName,String address,String phone, Pageable pageable);;
 }
