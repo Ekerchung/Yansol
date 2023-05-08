@@ -1,6 +1,25 @@
+import {userLogin} from "@/api";
+
 export default {
     namespaced:true,
-    actions:{},
+    actions:{
+        fetchLogin(context,data) {
+            // console.log(data);
+            return userLogin(data)
+                .then((response) => {
+                    localStorage.setItem('token',response.data.token)
+                    localStorage.setItem('role',response.data.role)
+                    localStorage.setItem('username',response.data.username)
+                    localStorage.setItem('lastLoginTime',response.data.lastLoginTime)
+                    localStorage.setItem('employee',JSON.stringify(response.data.employee))
+                    return response;
+                })
+                .catch((error) => {
+                    console.log('menu.js',error)
+                    throw error;
+                })
+        },
+    },
     mutations:{
         handleMenu(state){
             // console.log('handleMenu被調用了');

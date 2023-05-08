@@ -37,8 +37,8 @@ export default {
         fetchOrderData(context) {
             return getOrderData()
                 .then((response) => {
-                    console.log('調用了fetchOrderData')
-                    context.commit('setOrderData', response.data)
+                    console.log('調用了fetchOrderData');
+                    context.commit('setOrderData', response.data);
                 })
                 .catch((error) => {
                     console.error(error)
@@ -114,9 +114,9 @@ export default {
                 }
             }
             //將當月每個員工的收入依myChart3所需格式保存到map中
-            let mappedDataList = employeeDataList.map((item, index, arr) => {
+            let mappedDataList = employeeDataList.filter(e => e.total_sales_this_month !== 0).map((item, index, arr) => {
                 return {
-                    name: item.ename,
+                    name: item.name,
                     value: item.total_sales_this_month
                 };
             });
@@ -179,21 +179,43 @@ export default {
     mutations:{
         setGoodData(state, data) { // 添加goodData數據
             state.goodData = data;
+            console.log('調用了setGoodData')
         },
-        setCompanyData(state, year) { // 添加companyData數據
-            state.companyData = year;
+        setCompanyData(state, data) { // 添加companyData數據
+            state.companyData = data;
+            console.log('調用了setCompanyData')
         },
-        setEmployeeData(state, year) { // 添加employeeData數據
-            state.employeeData = year;
+        setEmployeeData(state, data) { // 添加employeeData數據
+            state.employeeData = data;
+            console.log('調用了setEmployeeData')
         },
         setOrderData(state, data) { // 添加orderData數據
             state.orderData = data;
+            console.log('調用了setOrderData')
         },
         setReturnData(state, data) { // 添加returnData數據
             state.returnData = data;
+            console.log('調用了setReturnData')
         },
         setCountData(state, data) { // 添加countData數據
             state.countData = data;
+            console.log('調用了setCountData')
+        },
+        setMenuData(state, data) { // 依據帳號權限添加MenuData數據
+            console.log(data)
+            if(localStorage.getItem('menuData')){
+                console.log('11調用了setMenuData')
+                state.menuData = JSON.parse(localStorage.getItem('menuData'));
+            }else if(data === 1){
+                console.log('22調用了setMenuData')
+                state.menuData = state.adminMenuData;//將管理員權限的菜單賦予menuData
+                localStorage.setItem('menuData',JSON.stringify(state.adminMenuData));//保存菜單內容到localStorage中，避免刷新失去Vuex中的menuData，失去導航頁面
+            }else {
+                console.log('33調用了setMenuData')
+                state.menuData = state.userMenuData;//將一般使用者權限的菜單賦予menuData
+                localStorage.setItem('menuData',JSON.stringify(state.userMenuData));//保存菜單內容到localStorage中，避免刷新失去Vuex中的menuData，失去導航頁面
+            }
+            console.log('44調用了setMenuData')
         },
     },
     state:{
@@ -251,6 +273,131 @@ export default {
                 icon: "coin",
                 color: "#5ab1ef",
             },
-        ]
+        ],
+        adminMenuData:[
+
+            {
+                path: '/home',
+                name: 'home',
+                label: '首页',
+                icon: 's-home',
+                url: 'Home/Home',
+                meta:{role: ['1']}
+            },
+            {
+                label: '線材進出貨管理',
+                icon: 'location',
+                meta:{role: ['1']},
+                children: [
+                    {
+                        path: '/linepurchase',
+                        name: 'linepurchase',
+                        label: '線材進貨',
+                        icon: 'setting',
+                        url: 'management/linepurchase',
+                        meta:{role: ['1']}
+                    },
+                    {
+                        path: '/lineshipping',
+                        name: 'lineshipping',
+                        label: '線材出貨',
+                        icon: 'setting',
+                        url: 'management/lineshipping',
+                        meta:{role: ['1']}
+                    },
+                    {
+                        path: '/lineprocess',
+                        name: 'lineprocess',
+                        label: '線材生產',
+                        icon: 'setting',
+                        url: 'management/lineprocess',
+                        meta:{role: ['1']}
+                    },
+                    {
+                        path: '/linereturn',
+                        name: 'linereturn',
+                        label: '線材退貨',
+                        icon: 'setting',
+                        url: 'management/linereturn',
+                        meta:{role: ['1']}
+                    },
+                    {
+                        path: '/linemanagement',
+                        name: 'linemanagement',
+                        label: '線材管理',
+                        icon: 'setting',
+                        url: 'management/linemanagement',
+                        meta:{role: ['1']}
+                    },
+                ]
+            },
+            {
+                label: '人員管理',
+                icon: 'location',
+                meta:{role: ['1']},
+                children: [
+                    {
+                        path: '/payrollmanagement',
+                        name: 'payrollmanagement',
+                        label: '薪資管理',
+                        icon: 'setting',
+                        url: 'management/payrollmanagement',
+                        meta:{role: ['1']}
+                    },
+                    {
+                        path: '/workermanagement',
+                        name: 'workermanagement',
+                        label: '人員管理',
+                        icon: 'setting',
+                        url: 'management/workermanagement',
+                        meta:{role: ['1']}
+                    },
+                    {
+                        path: '/accountManagement',
+                        name: 'accountManagement',
+                        label: '帳號管理',
+                        icon: 'setting',
+                        url: 'management/accountManagement',
+                        meta:{role: ['1']}
+                    }
+                ]
+            }
+        ],
+        userMenuData:[
+
+            {
+                path: '/UserHome',
+                name: 'home',
+                label: '首页',
+                icon: 's-home',
+                url: 'Home/UserHome',
+                meta:{role: ['2']}
+            },
+            {
+                path: '/lineprocess',
+                name: 'userlineprocess',
+                label: '線材生產',
+                icon: 'video-play',
+                url: 'management/lineprocess',
+                meta:{role: ['2']}
+            },
+            {
+                path: '/prepayroll',
+                name: 'prepayroll',
+                label: '當月薪資試算',
+                icon: 'user',
+                url: 'prepayroll/prepayroll',
+                meta:{role: ['2']}
+            },
+            {
+                path: '/payroll',
+                name: 'user',
+                label: '薪資紀錄',
+                icon: 'user',
+                url: 'payroll/payroll',
+                meta:{role: ['2']}
+            },
+        ],
+        menuData:[]
     }
 }

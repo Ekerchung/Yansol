@@ -1,8 +1,17 @@
 import axios from 'axios'
 
+function getToken() {
+    const token = localStorage.getItem('token')
+    if (!token) {
+        return null
+    }
+    console.log(token)
+    return token
+}
 const http = axios.create({
     baseURL:'http://localhost:8181/api/',
     timeout: 10000,
+    headers: { 'Authorization': `Bearer ${getToken()}` },
 })
 
 // 添加請求攔截器

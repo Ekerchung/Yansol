@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
   data(){
     return{
@@ -37,87 +39,100 @@ export default {
           name: 'home',
           label: '首页',
           icon: 's-home',
-          url: 'Home/Home'
+          url: 'Home/Home',
+          meta:{role: ['1', '2']}
         },
         {
           path: '/lineprocess',
           name: 'userlineprocess',
           label: '線材生產',
           icon: 'video-play',
-          url: 'management/lineprocess'
+          url: 'management/lineprocess',
+          meta:{role: ['2']}
         },
         {
           path: '/prepayroll',
           name: 'prepayroll',
           label: '當月薪資試算',
           icon: 'user',
-          url: 'prepayroll/prepayroll'
+          url: 'prepayroll/prepayroll',
+          meta:{role: ['2']}
         },
         {
           path: '/payroll',
           name: 'user',
           label: '薪資紀錄',
           icon: 'user',
-          url: 'payroll/payroll'
+          url: 'payroll/payroll',
+          meta:{role: ['2']}
         },
         {
           label: '線材進出貨管理',
           icon: 'location',
+          meta:{role: ['1']},
           children: [
             {
               path: '/linepurchase',
               name: 'linepurchase',
               label: '線材進貨',
               icon: 'setting',
-              url: 'management/linepurchase'
+              url: 'management/linepurchase',
+              meta:{role: ['1']}
             },
             {
               path: '/lineshipping',
               name: 'lineshipping',
               label: '線材出貨',
               icon: 'setting',
-              url: 'management/lineshipping'
+              url: 'management/lineshipping',
+              meta:{role: ['1']}
             },
             {
               path: '/lineprocess',
               name: 'lineprocess',
               label: '線材生產',
               icon: 'setting',
-              url: 'management/lineprocess'
+              url: 'management/lineprocess',
+              meta:{role: ['1']}
             },
             {
               path: '/linereturn',
               name: 'linereturn',
               label: '線材退貨',
               icon: 'setting',
-              url: 'management/linereturn'
+              url: 'management/linereturn',
+              meta:{role: ['1']}
             },
             {
               path: '/linemanagement',
               name: 'linemanagement',
               label: '線材管理',
               icon: 'setting',
-              url: 'management/linemanagement'
+              url: 'management/linemanagement',
+              meta:{role: ['1']}
             },
             ]
         },
         {
           label: '人員管理',
           icon: 'location',
+          meta:{role: ['1']},
           children: [
             {
               path: '/payrollmanagement',
               name: 'payrollmanagement',
               label: '薪資管理',
               icon: 'setting',
-              url: 'management/payrollmanagement'
+              url: 'management/payrollmanagement',
+              meta:{role: ['1']}
             },
             {
               path: '/workermanagement',
               name: 'workermanagement',
               label: '人員管理',
               icon: 'setting',
-              url: 'management/workermanagement'
+              url: 'management/workermanagement',
+              meta:{role: ['1']}
             }
           ]
         }
@@ -141,13 +156,15 @@ export default {
   },
 
   computed: {
+    //映射Vuex中的menuData
+    ...mapState('data',['menuData']),
     //沒有子菜單
     noChildren() {
-      return this.menudata.filter(item => !item.children);
+      return this.menuData.filter(item => !item.children);
     },
     //有子菜單
     haschildren() {
-      return this.menudata.filter(item => item.children);
+      return this.menuData.filter(item => item.children);
     },
     //切換側邊欄收/折
     isCollapse() {

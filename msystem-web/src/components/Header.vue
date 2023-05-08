@@ -29,6 +29,7 @@
 
 <script>
 import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
+import Cookie from 'js-cookie'
 export default {
 
   methods:{
@@ -37,11 +38,18 @@ export default {
     handleClick(command) {
       if (command === 'cancel') {
         console.log('登出')
-        // 清除cookie中的token
-        Cookie.remove('token')
-        // 清除cookie中的menu
-        Cookie.remove('menu')
-        // 跳转到登录页
+        // 清除localStorage中的token
+        localStorage.removeItem('token')
+        localStorage.removeItem('role')
+        localStorage.removeItem('username')
+        localStorage.removeItem('menuData')
+        localStorage.removeItem('lastLoginTime')
+        localStorage.removeItem('employee')
+        //清除cookie中的menu
+        if(Cookie){
+          Cookie.remove('menu')
+        }
+        // 跳轉到登入頁面
         this.$router.push('/login')
       }
     },

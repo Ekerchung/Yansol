@@ -21,4 +21,7 @@ new Vue({
   render: h => h(App),
   router: router,
   store,
+  created() {
+    store.commit('data/setMenuData',localStorage.getItem('role'))
+  }
 }).$mount('#app')
