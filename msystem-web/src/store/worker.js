@@ -55,7 +55,7 @@ export default {
         setEmployeePageData(state, data) { // 添加goodData數據
             // console.log('data',data)
             state.employeePageData = data;
-            // console.log('調用了setEmployeePageData')
+            console.log('調用了setEmployeePageData')
         },
     },
     state:{

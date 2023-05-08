@@ -4,6 +4,8 @@ import com.msystem.entity.Account;
 import com.msystem.entity.Company;
 import com.msystem.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -14,4 +16,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface AccountRepository extends JpaRepository<Account, Integer> {
     Account findByUsernameAndPassword(String username,String password);
+    Page<Account> findByUsernameContaining(String username, Pageable pageable);
 }

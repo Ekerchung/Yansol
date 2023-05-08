@@ -6,7 +6,7 @@
           <img src="../assets/images/male.png" alt="">
           <div class="userinfo">
             <p class="name">{{employee.name}}</p>
-            <p class="access">超级管理员</p>
+            <p class="access">一般使用者</p>
           </div>
         </div>
         <div class="login-info">
@@ -80,7 +80,7 @@
 import * as echarts from 'echarts';
 import { mapGetters,mapActions,mapState,mapMutations } from 'vuex'
 export default {
-  name:'Home',
+  name:'UserHome',
   data() {
     return {
       employee: {},

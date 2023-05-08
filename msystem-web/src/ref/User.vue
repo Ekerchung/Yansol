@@ -234,22 +234,22 @@ export default {
     }
 }
 </script>
-<style lang="less" scoped>
-.manage {
-    height: 90%;
-    .manage-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .common-tabel {
-        position: relative;
-        height: calc(100% - 62px);
-        .pager {
-            position: absolute;
-            bottom: 0;
-            right: 20px;
-        }
-    }
-}
-</style>
+<!--<style lang="less" scoped>-->
+<!--.manage {-->
+<!--    height: 90%;-->
+<!--    .manage-header {-->
+<!--        display: flex;-->
+<!--        justify-content: space-between;-->
+<!--        align-items: center;-->
+<!--    }-->
+<!--    .common-tabel {-->
+<!--        position: relative;-->
+<!--        height: calc(100% - 62px);-->
+<!--        .pager {-->
+<!--            position: absolute;-->
+<!--            bottom: 0;-->
+<!--            right: 20px;-->
+<!--        }-->
+<!--    }-->
+<!--}-->
+<!--</style>-->

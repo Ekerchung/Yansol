@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 
 export default {
   name:'Login',
@@ -38,13 +38,17 @@ export default {
 
     }
   },
+
   methods:{
     ...mapActions('menu',['fetchLogin']),
+    ...mapMutations('data',['setMenuData']),
     login(){
       this.fetchLogin(this.loginForm)
           .then((response) => {
             console.log("login.vue",response); // 打印响应数据
-            this.$router.push("/home")
+            console.log("login.vue",response.data.employee.name); // 打印响应数据
+            this.$store.commit('data/setMenuData',response.data.role) //根據帳號權設定menuData
+            this.$router.push(`${response.data.role === '1'?'/home' : '/userhome' }`)
           })
           .catch((error) => {
             console.log("login.vue",error.response.data); // 打印错误信息

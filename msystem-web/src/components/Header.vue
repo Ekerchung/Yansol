@@ -40,6 +40,11 @@ export default {
         console.log('登出')
         // 清除localStorage中的token
         localStorage.removeItem('token')
+        localStorage.removeItem('role')
+        localStorage.removeItem('username')
+        localStorage.removeItem('menuData')
+        localStorage.removeItem('lastLoginTime')
+        localStorage.removeItem('employee')
         //清除cookie中的menu
         if(Cookie){
           Cookie.remove('menu')

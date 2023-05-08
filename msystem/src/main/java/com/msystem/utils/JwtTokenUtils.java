@@ -2,9 +2,12 @@ package com.msystem.utils;
 
 import com.msystem.entity.Account;
 import io.jsonwebtoken.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.security.auth.message.AuthException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
@@ -46,11 +49,12 @@ public class JwtTokenUtils implements Serializable {
     /**
      * 驗證JWT
      */
-    public static void validateToken(String token) throws AuthException {
+    public static Claims validateToken(String token) throws AuthException {
         try {
-            Jwts.parser()
+            return Jwts.parser()
                     .setSigningKey( SECRET )
-                    .parseClaimsJws( token );
+                    .parseClaimsJws( token )
+                    .getBody();
         } catch (SignatureException e) {
             throw new AuthException("Invalid JWT signature.");
         }
@@ -66,5 +70,16 @@ public class JwtTokenUtils implements Serializable {
         catch (IllegalArgumentException e) {
             throw new AuthException("JWT token compact of handler are invalid");
         }
+    }
+
+    /**
+     * 獲取JWT
+     */
+    public static String getToken(HttpServletRequest request) {
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+        return null;
     }
 }
