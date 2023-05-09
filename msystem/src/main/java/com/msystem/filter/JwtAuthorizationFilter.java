@@ -3,6 +3,7 @@ package com.msystem.filter;
 import com.msystem.utils.JwtTokenUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.security.auth.message.AuthException;
@@ -20,12 +21,14 @@ import java.util.Arrays;
  * @version: V1.0
  */
 @Component
+@CrossOrigin
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     // 將 /login 加入白名單，即不需要進行 token 權限驗證
     private static final String[] WHITE_LIST = {
             "/login"
     };
+    @CrossOrigin
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         // 處理瀏覽器的預請求

@@ -1,16 +1,30 @@
 import axios from 'axios'
+import jwt_decode from 'jwt-decode';
 
 function getToken() {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
+    //驗證token是否存在
     if (!token) {
         return null
     }
+    // //驗證token是否超時
+    // const decodedToken = jwt_decode(token);
+    // if (Date.now() >= decodedToken.exp * 1000) {
+    //     //若超時，清空localStorage保存的個人資料
+    //     localStorage.removeItem('token')
+    //     localStorage.removeItem('role')
+    //     localStorage.removeItem('username')
+    //     localStorage.removeItem('menuData')
+    //     localStorage.removeItem('lastLoginTime')
+    //     localStorage.removeItem('employee')
+    // }
     console.log(token)
     return token
 }
+
 const http = axios.create({
     baseURL:'http://localhost:8181/api/',
-    timeout: 10000,
+    // timeout: 10000,
     headers: { 'Authorization': `Bearer ${getToken()}` },
 })
 

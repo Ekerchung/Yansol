@@ -24,7 +24,7 @@ import java.util.Map;
 @Component
 public class JwtTokenUtils implements Serializable {
     //設定過期時間
-    private static final long EXPIRATION_TIME = 1 * 60 * 1000;
+    private static final long EXPIRATION_TIME = 1 * 10 * 1000; //60分鐘
     /**
      * JWT SECRET KEY
      */
