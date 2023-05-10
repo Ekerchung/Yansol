@@ -26,14 +26,6 @@ export default {
                 })
         },
         fetchGetEmployeePageData(context,data) {
-            //判斷是否有頁碼傳入，若沒有傳則默認為第1頁
-            // if(data.pageNum == null){
-            //     // const pageNum = 1;
-            //     data.pageNum = 1;
-            // }
-            // // if(data.queryKeyWord == null){
-            //
-            // }
             console.log('fetchGetEmployeePageData',data);
             return getEmployeePageData(data)
                 .then((response) => {
@@ -47,12 +39,12 @@ export default {
     },
     getters: {
         //當前年份
-        currentYear(state) {
-            return new Date().getFullYear();
-        },
+        // currentYear(state) {
+        //     return new Date().getFullYear();
+        // },
     },
     mutations:{
-        setEmployeePageData(state, data) { // 添加goodData數據
+        setEmployeePageData(state, data) { // 添加EmployeePageData數據
             // console.log('data',data)
             state.employeePageData = data;
             console.log('調用了setEmployeePageData')

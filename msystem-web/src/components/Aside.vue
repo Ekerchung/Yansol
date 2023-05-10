@@ -20,7 +20,7 @@
           <span>{{ item.label }}</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item @click.once="clickMenu(subItem)" v-for="subItem in item.children" :key="subItem.path" :index="subItem.path">{{ subItem.label }}</el-menu-item>
+          <el-menu-item @click="clickMenu(subItem)" v-for="subItem in item.children" :key="subItem.path" :index="subItem.path">{{ subItem.label }}</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
 

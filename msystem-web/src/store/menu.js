@@ -15,7 +15,6 @@ export default {
                     return response;
                 })
                 .catch((error) => {
-                    console.log('menu.js',error)
                     throw error;
                 })
         },

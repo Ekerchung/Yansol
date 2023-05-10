@@ -122,6 +122,38 @@ export default {
             });
             return mappedDataList;
         },
+        salaryList(state,getters) {
+            //以下處理myChart3所需數據
+            let employeeDataList = state.employeeData.map(c => ({ ...c, total_sales_this_month: 0,total_sales_last_month: 0}));
+            //由order篩選出當月每個員工的收入
+            for (let i = 0; i < state.orderData.length; i++) {
+                let item = state.orderData[i];
+                if(item.oDate.includes(getters.currentMonth)){
+                    let employee = employeeDataList.find(e => e.eid === item.employee.eid );
+                    if (employee) {
+                        employeeDataList[item.employee.eid].total_sales_this_month += item.ototalPrice;
+                    }
+                }
+            }
+            for (let i = 0; i < state.orderData.length; i++) {
+                let item = state.orderData[i];
+                if(item.oDate.includes(getters.lastMonth)){
+                    let employee = employeeDataList.find(e => e.eid === item.employee.eid );
+                    if (employee) {
+                        employeeDataList[item.employee.eid].total_sales_last_month += item.ototalPrice;
+                    }
+                }
+            }
+            //將當月每個員工的收入依myChart3所需格式保存到map中
+            let mappedDataList = employeeDataList.filter(e => e.total_sales_this_month !== 0 || e.total_sales_last_month !== 0  ).map((item, index, arr) => {
+                return {
+                    name: item.name,
+                    lastSalary: item.total_sales_last_month,
+                    thisSalary: item.total_sales_this_month
+                };
+            });
+            return mappedDataList;
+        },
         //使用moment.js取得當前時間，格式為"YYYY-MM-DD"
         currentDate(state) {
             let moment = require('moment');
@@ -133,6 +165,12 @@ export default {
             let moment = require('moment');
             let currentMonth = moment().format('YYYY-MM');
             return currentMonth
+        },
+        //使用moment.js取得上個月份，格式為"YYYY-MM"
+        lastMonth(state) {
+            let moment = require('moment');
+            const lastMonth = moment().subtract(1, 'month').format('YYYY-MM');
+            return lastMonth
         },
         //每月進貨清單
         monthlyPurchaseList(state,getters) {
@@ -188,6 +226,14 @@ export default {
         setEmployeeData(state, data) { // 添加employeeData數據
             state.employeeData = data;
             console.log('調用了setEmployeeData')
+        },
+        setThisMonthSallary(state, data) { // 添加employeeData數據
+            state.thisMonthSallary = data;
+            console.log('調用了setthisMonthSallary')
+        },
+        setLastMonthSallary(state, data) { // 添加employeeData數據
+            state.lastMonthSallary = data;
+            console.log('調用了setlastMonthSallary')
         },
         setOrderData(state, data) { // 添加orderData數據
             state.orderData = data;
@@ -398,6 +444,7 @@ export default {
                 meta:{role: ['2']}
             },
         ],
-        menuData:[]
+        menuData:[],
+
     }
 }

@@ -1,5 +1,6 @@
 package com.msystem.controller;
 
+import com.msystem.dto.GoodDto;
 import com.msystem.entity.Good;
 import com.msystem.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,13 @@ public class GoodController {
 //        System.out.println("調用了queryAllGood()");
         List<Good> goodList = goodService.queryAllGood();
         return goodList;
+    }
+    @PostMapping(value = "/good")
+    @Transactional
+    public void addGood(@RequestBody List<GoodDto> goodDtoList){
+        System.out.println("調用了addGood()");
+        System.out.println(goodDtoList);
+//        List<Good> goodList = goodService.queryAllGood();
+//        return goodList;
     }
 }

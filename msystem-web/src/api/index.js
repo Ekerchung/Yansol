@@ -42,3 +42,6 @@ export const getAccountPageData = (params) => {
 export const userLogin = (params) => {
   return http.get('/login', { params:  params })
 }
+export const addLineData = (data) => {
+  return http.post('/good', data)
+}

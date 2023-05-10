@@ -14,7 +14,7 @@ import java.util.Optional;
  * @date: 2023/4/22 下午 07:39
  * @version: V1.0
  */
-@CrossOrigin
+@CrossOrigin(origins = {"http://localhost:8080"})
 @RestController
 @RequestMapping(value = "/api")
 public class CompanyController {

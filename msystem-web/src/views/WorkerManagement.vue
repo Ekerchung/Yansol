@@ -223,9 +223,6 @@ export default {
 </script>
 
 <style  scoped>
-/*.el-dialog__header , .el-dialog__body , .el-dialog__footer{*/
-/*  width: 500px;*/
-/*}*/
 .manage {
   height: 100%;
 }

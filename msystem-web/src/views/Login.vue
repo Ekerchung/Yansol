@@ -45,13 +45,13 @@ export default {
     login(){
       this.fetchLogin(this.loginForm)
           .then((response) => {
-            console.log("login.vue",response); // 打印响应数据
-            console.log("login.vue",response.data.employee.name); // 打印响应数据
             this.$store.commit('data/setMenuData',response.data.role) //根據帳號權設定menuData
-            this.$router.push(`${response.data.role === '1'?'/home' : '/userhome' }`)
+            setTimeout(() => {
+              this.$router.push(`${response.data.role === '1'?'/home' : '/userhome' }`);
+            }, 1000);
+            // this.$router.push(`${response.data.role === '1'?'/home' : '/userhome' }`)
           })
           .catch((error) => {
-            console.log("login.vue",error.response.data); // 打印错误信息
             this.$message.error(error.response.data);
           });
     },

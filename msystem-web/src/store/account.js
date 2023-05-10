@@ -38,15 +38,15 @@ export default {
     },
     getters: {
         //當前年份
-        currentYear(state) {
-            return new Date().getFullYear();
-        },
+        // currentYear(state) {
+        //     return new Date().getFullYear();
+        // },
     },
     mutations:{
-        setAccountPageData(state, data) { // 添加goodData數據
+        setAccountPageData(state, data) { // 添加SalaryData數據
             // console.log('data',data)
             state.accountPageData = data;
-            // console.log('調用了setEmployeePageData')
+            // console.log('調用了setSalaryData')
         },
     },
     state:{

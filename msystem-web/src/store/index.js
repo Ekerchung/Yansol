@@ -6,6 +6,7 @@ import menu from './menu'
 import data from './data'
 import worker from './worker'
 import account from './account'
+import line from './line'
 
 //應用Vuex插件
 Vue.use(Vuex)
@@ -24,5 +25,6 @@ export default new Vuex.Store({
         data,
         worker,
         account,
+        line,
     },
 })

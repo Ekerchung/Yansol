@@ -240,11 +240,6 @@ export default {
     },
   },
   mounted() {
-    this.fetchGoodData();
-    this.fetchCompanyData();
-    this.fetchEmployeeData();
-    this.fetchOrderData();
-    this.fetchReturnData();
     //使用定時器確保vuex異步取得數據後，再進行渲染
     setTimeout(() => {
       this.renderChart();
