@@ -248,7 +248,7 @@ export default {
             console.log('調用了setCountData')
         },
         setMenuData(state, data) { // 依據帳號權限添加MenuData數據
-            console.log(data)
+            console.log('setMenuData.data',data)
             if(localStorage.getItem('menuData')){
                 console.log('11調用了setMenuData')
                 state.menuData = JSON.parse(localStorage.getItem('menuData'));
@@ -256,7 +256,7 @@ export default {
                 console.log('22調用了setMenuData')
                 state.menuData = state.adminMenuData;//將管理員權限的菜單賦予menuData
                 localStorage.setItem('menuData',JSON.stringify(state.adminMenuData));//保存菜單內容到localStorage中，避免刷新失去Vuex中的menuData，失去導航頁面
-            }else {
+            }else if(data === 2){
                 console.log('33調用了setMenuData')
                 state.menuData = state.userMenuData;//將一般使用者權限的菜單賦予menuData
                 localStorage.setItem('menuData',JSON.stringify(state.userMenuData));//保存菜單內容到localStorage中，避免刷新失去Vuex中的menuData，失去導航頁面
@@ -331,7 +331,7 @@ export default {
                 meta:{role: ['1']}
             },
             {
-                label: '線材進出貨管理',
+                label: '線材管理',
                 icon: 'location',
                 meta:{role: ['1']},
                 children: [
@@ -344,19 +344,19 @@ export default {
                         meta:{role: ['1']}
                     },
                     {
-                        path: '/lineshipping',
-                        name: 'lineshipping',
-                        label: '線材出貨',
-                        icon: 'setting',
-                        url: 'management/lineshipping',
-                        meta:{role: ['1']}
-                    },
-                    {
                         path: '/lineprocess',
                         name: 'lineprocess',
                         label: '線材生產',
                         icon: 'setting',
                         url: 'management/lineprocess',
+                        meta:{role: ['1']}
+                    },
+                    {
+                        path: '/lineshipping',
+                        name: 'lineshipping',
+                        label: '線材出貨',
+                        icon: 'setting',
+                        url: 'management/lineshipping',
                         meta:{role: ['1']}
                     },
                     {

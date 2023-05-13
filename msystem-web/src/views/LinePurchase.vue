@@ -1,5 +1,6 @@
 <template>
   <div class="manage">
+    <div><span class="title">線材進貨</span></div>
     <div class="manage-header">
       <el-button type="primary" @click="addTable">+添加欄位</el-button>
     </div>
@@ -138,7 +139,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-button type="primary" class="submit_btn" @click="submit">提交</el-button>
+        <el-button type="primary" :plain="true" class="submit_btn" @click="submit">提交</el-button>
       </div>
     </el-form>
   </div>
@@ -210,7 +211,11 @@ export default {
         //驗證通過，執行if內的代碼
         if(valid){
           // 新增新增線材資料
-          this.fetchAddLineData(this.purchaseForm.tableData);
+          this.fetchAddLineData(this.purchaseForm.tableData).then((resp) => {
+            this.$message.success(resp.data);
+          }).catch((error) => {
+            this.$message.error(error.response.data);
+          });
 
           //清空form表單的數據
           setTimeout(() => {
@@ -227,7 +232,6 @@ export default {
             this.$refs.purchaseForm.resetFields();
           }, 2000);
         }
-
       })
     },
     //回調函數，定義表格的序號，可用來綁定資料數組
@@ -245,16 +249,15 @@ export default {
   created() {
     this.fetchCompanyData();
   },
-  mounted() {
-
-    setTimeout(() => {
-      this.mapCompanyData = this.companyData;
-    }, 30);
-  }
 }
 </script>
 
-<style>
+<style scoped>
+.title{
+  font-size: 24px;
+  font-weight: bold;
+  border-bottom: 1px solid black;
+}
 /* 日期选择框的宽度 */
 .el-date-editor.el-input, .el-date-editor.el-input__inner {
   width: 140px;
@@ -287,6 +290,11 @@ export default {
 .submit_btn{
   margin-left: 1400px;
   margin-top: 20px;
+}
+.manage .common-tabel .pager {
+  position: absolute;
+  bottom: 40px;
+  right: 20px;
 }
 
 </style>

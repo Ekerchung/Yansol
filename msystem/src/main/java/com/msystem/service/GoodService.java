@@ -1,6 +1,11 @@
 package com.msystem.service;
 
+import com.msystem.dto.GoodDto;
 import com.msystem.entity.Good;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,4 +21,9 @@ public interface GoodService {
     public Optional<Good> queryGoodById(int id);
 
     List<Good> queryAllGood();
+
+    ResponseEntity addGood(List<GoodDto> goodDtoList);
+
+    Page<Good> queryGoodByPage(PageRequest pageable);
+    Page<Good> findByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(String lineName, String lineType, String lineId, String companyName,  Pageable pageable);
 }

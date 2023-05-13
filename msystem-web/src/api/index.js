@@ -3,6 +3,9 @@ import http from "../utils/request"
 export const getGoodData = () => {
   return http.get('/good')
 }
+export const getGoodPageData = (params) => {
+  return http.get('/page/good',{ params:  params })
+}
 export const getCompanyData = () => {
   return http.get('/company')
 }

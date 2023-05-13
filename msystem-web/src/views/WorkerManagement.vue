@@ -43,7 +43,7 @@
       <el-button type="primary" @click="dialogFormVisible = true">+ 新增</el-button>
       <el-form :inline="true" :model="queryForm">
         <el-form-item>
-          <el-input v-model="queryForm.queryKeyword" placeholder="輸入關鍵字"></el-input>
+          <el-input v-model="queryForm.queryKeyword" placeholder="輸入關鍵字" @keyup.enter.native="handlePage(1)"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handlePage(1)">查詢</el-button>

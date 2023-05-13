@@ -52,7 +52,6 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     let token = localStorage.getItem('token');
     let role = localStorage.getItem('role');
-        console.log('admin')
         if (!token && to.path !== '/login') { //若沒有token，前往的頁面只能為login，不然會無限跳轉login頁面
             next({path: '/login'})
         } else if (token && to.path === '/login') { //有token時，若前往的頁面為login頁面，則跳到home頁面，避免重複登入
@@ -63,6 +62,32 @@ router.beforeEach((to, from, next) => {
             next()  //正常訪問
         }
 })
-
+// router.beforeEach((to, from, next) => {
+//     let token = localStorage.getItem('token');
+//     let role = localStorage.getItem('role');
+//     if (!token && to.path !== '/login') {
+//         // 若没获取到token，则跳转到登录页面
+//         next({ path: '/login' })
+//     } else {
+//         // 获取token的过期时间
+//         let expireTime = localStorage.getItem('expireTime');
+//         if (!expireTime || Date.now() > expireTime) {
+//             // 若过期时间不存在或已过期，则跳转到登录页面
+//             localStorage.removeItem('token');
+//             localStorage.removeItem('role');
+//             localStorage.removeItem('expireTime');
+//             next({ path: '/login' });
+//         } else if (token && to.path === '/login') {
+//             // 若当前路由为登录页，则跳转到首页
+//             next({ path: `${role === '1' ? '/home' : '/userhome' }` });
+//         } else if (token && !to.meta.role.includes(role) && to.path !== '/home') {
+//             // 若当前用户权限不足，则跳转到首页
+//             next({ path: `${role === '1' ? '/home' : '/userhome' }` });
+//         } else {
+//             // 否则正常访问
+//             next();
+//         }
+//     }
+// });
 
 export default router;

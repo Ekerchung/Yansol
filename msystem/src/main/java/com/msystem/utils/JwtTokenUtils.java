@@ -35,13 +35,12 @@ public class JwtTokenUtils implements Serializable {
      */
     public static String generateToken(Account userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put( "userName", userDetails.getUsername());
-        claims.put( "role", userDetails.getRole());
-
+        claims.put("userName", userDetails.getUsername());
+        claims.put("role", userDetails.getRole());
         //使用builder設置claims,Expiration，sign建立token，並使用compact()輸出成String
         return Jwts.builder()
                 .setClaims( claims )
-                .setExpiration( new Date( Instant.now().toEpochMilli() + EXPIRATION_TIME  ) )
+                .setExpiration( new Date( Instant.now().toEpochMilli() + EXPIRATION_TIME) )
                 .signWith( SignatureAlgorithm.HS512, SECRET )
                 .compact();
     }

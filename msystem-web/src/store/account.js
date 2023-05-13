@@ -24,7 +24,7 @@ export default {
                 })
         },
         fetchGetAccountPageData(context,data) {
-            // console.log('fetchAccountPageData',data);
+            console.log('fetchAccountPageData',data);
             return getAccountPageData(data)
                 .then((response) => {
                     // console.log('調用了fetchGetEmployeePageData');

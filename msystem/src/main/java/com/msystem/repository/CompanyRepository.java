@@ -1,5 +1,6 @@
 package com.msystem.repository;
 
+import com.msystem.entity.Account;
 import com.msystem.entity.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @version: V1.0
  */
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
+
 }

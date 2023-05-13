@@ -6,7 +6,7 @@
         <el-input v-model="loginForm.username"></el-input>
       </el-form-item>
       <el-form-item label="密碼" prop="password">
-        <el-input type="password" v-model="loginForm.password"></el-input>
+        <el-input type="password" v-model="loginForm.password" @keyup.enter.native="login"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" style="margin-left: 82px;margin-top: 10px;" :plain="true" @click="login">登入</el-button>
@@ -38,18 +38,19 @@ export default {
 
     }
   },
-
+created() {
+    // console.log('login頁面')
+},
   methods:{
     ...mapActions('menu',['fetchLogin']),
     ...mapMutations('data',['setMenuData']),
     login(){
       this.fetchLogin(this.loginForm)
           .then((response) => {
-            this.$store.commit('data/setMenuData',response.data.role) //根據帳號權設定menuData
+              this.$store.commit('data/setMenuData',response.data.role) //根據帳號權設定menuData
             setTimeout(() => {
               this.$router.push(`${response.data.role === '1'?'/home' : '/userhome' }`);
             }, 1000);
-            // this.$router.push(`${response.data.role === '1'?'/home' : '/userhome' }`)
           })
           .catch((error) => {
             this.$message.error(error.response.data);

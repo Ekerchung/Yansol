@@ -38,7 +38,7 @@ public class GoodDto {
     private Date pDate;
 
     @JsonProperty("total_count")
-    private BigDecimal totalCount;
+    private int totalCount;
 
     @JsonProperty("unit_price")
     private BigDecimal unitPrice;

@@ -1,4 +1,4 @@
-import {addLineData} from "../api";
+import {addLineData, getGoodPageData} from "../api";
 import _ from 'lodash';
 import moment from "moment";
 
@@ -7,25 +7,29 @@ export default {
     actions:{
         fetchAddLineData(context,data) {
             console.log('fetchAddLineData',data);
-            return addLineData(data)
+            return addLineData(data) //此處不獲取response、error，交由LinePurchase頁面獲取
+        },
+        fetchGoodPageData(context,data) {
+            console.log('fetchGoodPageData',data)
+            return getGoodPageData(data)
                 .then((response) => {
-                    // console.log('保存成功')
+                    context.commit('setGoodPageData', response.data)
                 })
                 .catch((error) => {
                     console.error(error)
                 })
-        },
+        }
     },
     getters: {
     },
     mutations:{
-        // setEmployeePageData(state, data) { // 添加EmployeePageData數據
-        //     // console.log('data',data)
-        //     state.employeePageData = data;
-        //     console.log('調用了setEmployeePageData')
-        // },
+        setGoodPageData(state, data) { // 添加goodPageData數據
+            state.goodPageData = data;
+            console.log('調用了setGoodPageData')
+        },
     },
     state:{
         linePageData: [],
+        goodPageData: [],
     }
 }
