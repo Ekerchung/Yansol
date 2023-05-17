@@ -60,7 +60,7 @@ public class GoodServiceImpl implements GoodService {
         int isExist = 0; //0代表lineId存在，1代表不存在
         if(!goodDtoList.isEmpty()){
             for (int i = 0; i < goodDtoList.size(); i++) {
-                if (goodRepository.findBylineId(goodDtoList.get(i).getLineId()) == null && isExist == 0) {
+                if (goodRepository.findBylineId(goodDtoList.get(i).getLineId()) == null && isExist == 0) {  //isExit = 0 修改Good
                     Good good = new Good();
                     Optional<Company> optionalCompany = companyRepository.findById(goodDtoList.get(i).getCompanyId());
                     good.setLineId(goodDtoList.get(i).getLineId());
@@ -70,6 +70,7 @@ public class GoodServiceImpl implements GoodService {
                     good.setTotalCount(goodDtoList.get(i).getTotalCount());
                     good.setUnitPrice(goodDtoList.get(i).getUnitPrice());
                     good.setCompany(optionalCompany.orElse(null));
+                    good.setState(1);
                     goodList.add(good);
                 } else {
                     isExist = 1;
@@ -87,14 +88,19 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public Page<Good> queryGoodByPage(PageRequest pageable) {
-        Page<Good> goodPage = goodRepository.findAll(pageable);
-        return goodPage;
+    public Page<Good> queryGoodByPageByState(PageRequest pageable,Integer state) {
+        if (state != null){
+            Page<Good> goodPage = goodRepository.findByState(state, pageable);
+            return goodPage;
+        }else{
+            Page<Good> goodPage = goodRepository.findAll(pageable);
+            return goodPage;
+        }
     }
 
     @Override
-    public Page<Good> findByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(String lineName, String lineType, String lineId, String companyName, Pageable pageable) {
-        Page<Good> goodPage = goodRepository.findByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(lineName,lineType,lineId,companyName, pageable);
+    public Page<Good> findByPageByStateByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(Integer state, String lineName, String lineType, String lineId, String companyName, Pageable pageable) {
+        Page<Good> goodPage = goodRepository.findByStateAndLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(state, lineName,lineType,lineId,companyName, pageable);
         return goodPage;
     }
 }

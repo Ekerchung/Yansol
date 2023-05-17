@@ -18,6 +18,6 @@ import java.util.List;
  */
 public interface GoodRepository  extends JpaRepository<Good, Integer> {
     Good findBylineId(String lineId);
-
-    Page<Good> findByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(String lineName, String lineType, String lineId, String companyName,  Pageable pageable);
+    Page<Good> findByState(Integer state, Pageable pageable);
+    Page<Good> findByStateAndLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(Integer state, String lineName, String lineType, String lineId, String companyName,  Pageable pageable);
 }

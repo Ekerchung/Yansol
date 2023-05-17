@@ -22,7 +22,7 @@ import java.util.Date;
 public class GoodDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int aId;
+    private int gId;
 
     @JsonProperty("line_id")
     private String lineId;

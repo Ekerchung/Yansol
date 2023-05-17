@@ -54,7 +54,7 @@ public class GoodController {
     }
 
     @GetMapping(value = "/page/good")
-    public Page<Good> queryGoodByPage(@RequestParam Integer pageNum, @RequestParam(required = false) String queryKeyWord){
+    public Page<Good> queryGoodByPageByState(@RequestParam Integer pageNum, @RequestParam(required = false) String queryKeyWord,@RequestParam(required = false) Integer state){
         //默認頁碼為0，PageRequest頁碼從0開始
         int page = 0;
         if(pageNum != null){
@@ -67,13 +67,13 @@ public class GoodController {
         PageRequest pageable = PageRequest.of(page, size, Sort.by(sortBy));
         Page<Good> goodPage = null;
         if(queryKeyWord == null || queryKeyWord.equals("")){
-            goodPage = goodService.queryGoodByPage(pageable);
+            goodPage = goodService.queryGoodByPageByState(pageable,state);
         }else {
             String lineName = queryKeyWord;
             String lineType = queryKeyWord;
             String lineId = queryKeyWord;
             String companyName = queryKeyWord;
-            goodPage = goodService.findByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(lineName, lineType, lineId, companyName,pageable);
+            goodPage = goodService.findByPageByStateByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(state, lineName, lineType, lineId, companyName,pageable);
         }
 
         return goodPage;

@@ -34,6 +34,7 @@ public class Good {
     private String lineName;
     private String lineType;
     private int totalCount;
+    private int remainingCount;
     private BigDecimal unitPrice;
     private BigDecimal totalPrice;
     private BigDecimal totalProfit;
