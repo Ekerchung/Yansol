@@ -1,4 +1,4 @@
-import {addLineData, getGoodPageData} from "../api";
+import {addLineData, getGoodPageData, updateGood} from "../api";
 import _ from 'lodash';
 import moment from "moment";
 
@@ -18,7 +18,11 @@ export default {
                 .catch((error) => {
                     console.error(error)
                 })
-        }
+        },
+        fetchUpdateGood(context,data) {
+            console.log('fetchUpdateGood',data);
+            return updateGood(data) //.then().catch()不寫，由調用的頁面接收信息
+        },
     },
     getters: {
     },

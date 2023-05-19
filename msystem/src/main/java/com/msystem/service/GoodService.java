@@ -25,5 +25,11 @@ public interface GoodService {
     ResponseEntity addGood(List<GoodDto> goodDtoList);
 
     Page<Good> queryGoodByPageByState(PageRequest pageable,Integer state);
-    Page<Good> findByPageByStateByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(Integer state, String lineName, String lineType, String lineId, String companyName, Pageable pageable);
+    Page<Good> findGoodsByStateAndLineNameOrLineTypeOrLineIdOrCompanyNameContaining(Integer state, String lineName, String lineType, String lineId, String companyName, Pageable pageable);
+
+    ResponseEntity updateGood(GoodDto goodDto);
+
+    Page<Good> queryAllGoodPage(PageRequest pageable);
+
+    Page<Good> findGoodsByLineNameContainingOrLineTypeContainingOrCompany_CompanyNameContaining(String lineName, String lineType, String lineId, String companyName, Pageable pageable);
 }

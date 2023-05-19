@@ -28,15 +28,26 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/order")
-    public List<Order> queryAllOrder(){
-        List<Order> orderList = orderService.queryAllOrder();
-        return orderList;
-    }
+//    @GetMapping("/order")
+//    public List<Order> queryAllOrder(){
+//        List<Order> orderList = orderService.queryAllOrder();
+//        return orderList;
+//    }
     @GetMapping("/order/{id}")
     public Order queryOrderById(@PathVariable("id") Integer id){
         Optional<Order> order = orderService.queryOrderById(id);
         return order.orElse(null);
+    }
+    @GetMapping("/order")
+    public List<Order> queryOrder(@RequestParam(required = false) String lineId){
+        if(lineId == null || lineId.equals("")){
+            List<Order> orderList = orderService.queryAllOrder();
+        return orderList;
+        }else {
+            List<Order> orderList = orderService.queryOrderByLineId(lineId);
+            return orderList;
+        }
+
     }
     @GetMapping("/page/order")
     public Page<Order> queryOrderByPage(@RequestParam Integer pageNum, @RequestParam(required = false) String queryKeyWord, @RequestParam boolean completeVisible){

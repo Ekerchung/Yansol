@@ -49,6 +49,11 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> order = orderRepository.findById(id);
         return order;
     }
+    @Override
+    public List<Order> queryOrderByLineId(String lineId){
+        List<Order> orderList = orderRepository.findByGood_LineId(lineId);
+        return orderList;
+    }
 
     @Override
     public Page<Order> queryOrderByPage(PageRequest pageable) {
@@ -87,12 +92,8 @@ public class OrderServiceImpl implements OrderService {
         order.setOUnitPrice(orderAddDto.getOrderUnitPrice());
         //保存訂單
         orderRepository.save(order);
-        //更新線材內待分配數量
+        //更新線材信息內待分配數量
         int remainingCount = good.getRemainingCount() - order.getOCount();
-        //若待分配數量為0，將state改為2:生產中
-        if(remainingCount == 0){
-            good.setState(2);
-        }
         good.setRemainingCount(remainingCount);
         goodRepository.save(good);
         return ResponseEntity.status(HttpStatus.OK).body("添加成功");
@@ -122,10 +123,16 @@ public class OrderServiceImpl implements OrderService {
         Optional<Employee> employeeOptional = employeeRepository.findById(orderUpdateDto.getEmployeeId());
         //將員工信息保存到訂單中
         orderOptional.orElse(null).setEmployee(employeeOptional.orElse(null));
-        //若有輸入完成日期，則保存至訂單中
+        //若有輸入完成日期，則保存至訂單中，並將訂單狀態改為2:完成
         if(orderUpdateDto.getComDate() != null){
             orderOptional.orElse(null).setComDate(orderUpdateDto.getComDate());
             orderOptional.orElse(null).setState(2);
+            //查詢當前線材是否全部訂單都完成，若已完成則將線材狀態改為3:待發貨
+            List<Order> orderList = orderRepository.findByGood_LineIdAndState(good.getLineId(),1);
+            if(orderList.isEmpty() && remainingCount == 0){
+                good.setState(3);
+                goodRepository.save(good);
+            }
         }
         //將訂單修改保存到資料庫
         orderRepository.save(orderOptional.orElse(null));
@@ -144,6 +151,12 @@ public class OrderServiceImpl implements OrderService {
         Good good = goodRepository.findBylineId(lineId);
         //將刪除數量保存回回good中待分配數量
         good.setRemainingCount(good.getRemainingCount() + order.orElse(null).getOCount());
+        //確認欲刪除訂單的線材是否已經改為狀態2：生產中
+        if(good.getState() == 2){
+            good.setState(1);
+        }
+        //將修改的good保存回資料庫
+        goodRepository.save(good);
         //刪除訂單
         orderRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("刪除成功");

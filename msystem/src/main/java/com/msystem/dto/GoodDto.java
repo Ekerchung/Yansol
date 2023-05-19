@@ -1,6 +1,7 @@
 package com.msystem.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.msystem.entity.Company;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -24,25 +25,37 @@ public class GoodDto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int gId;
 
-    @JsonProperty("line_id")
+    @JsonProperty("lineId")
     private String lineId;
 
-    @JsonProperty("line_name")
+    @JsonProperty("lineName")
     private String lineName;
 
-    @JsonProperty("line_type")
+    @JsonProperty("lineType")
     private String lineType;
 
-    @JsonProperty("p_date")
+    @JsonProperty("pDate")
     @DateTimeFormat(pattern = "yyyy-MM-DD")
     private Date pDate;
 
-    @JsonProperty("total_count")
+    @JsonProperty("sDate")
+    @DateTimeFormat(pattern = "yyyy-MM-DD")
+    private Date sDate;
+
+    @JsonProperty("totalCount")
     private int totalCount;
 
-    @JsonProperty("unit_price")
+    @JsonProperty("state")
+    private Integer state;
+
+    @JsonProperty("unitPrice")
     private BigDecimal unitPrice;
 
-    @JsonProperty("company_name")
+    @JsonProperty("companyName")
+    private Integer companyName;
+
+    @JsonProperty("companyId")
     private Integer companyId;
+
+
 }

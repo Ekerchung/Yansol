@@ -32,4 +32,6 @@ public interface OrderService {
     ResponseEntity updateOrder(OrderUpdateDto orderUpdateDto);
 
     Page<Order> findAllByState(Integer state,PageRequest pageable);
+
+    List<Order> queryOrderByLineId(String lineId);
 }

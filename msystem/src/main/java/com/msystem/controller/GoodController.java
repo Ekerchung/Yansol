@@ -1,6 +1,7 @@
 package com.msystem.controller;
 
 import com.msystem.dto.GoodDto;
+import com.msystem.dto.OrderUpdateDto;
 import com.msystem.entity.Account;
 import com.msystem.entity.Good;
 import com.msystem.service.GoodService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -66,15 +68,36 @@ public class GoodController {
         String sortBy = "gId";
         PageRequest pageable = PageRequest.of(page, size, Sort.by(sortBy));
         Page<Good> goodPage = null;
-        if(queryKeyWord == null || queryKeyWord.equals("")){
-            goodPage = goodService.queryGoodByPageByState(pageable,state);
-        }else {
-            String lineName = queryKeyWord;
-            String lineType = queryKeyWord;
-            String lineId = queryKeyWord;
-            String companyName = queryKeyWord;
-            goodPage = goodService.findByPageByStateByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(state, lineName, lineType, lineId, companyName,pageable);
+        if(state == null){
+            if(queryKeyWord == null || queryKeyWord.equals("")){
+                goodPage = goodService.queryAllGoodPage(pageable);
+            }else {
+                String lineName = queryKeyWord;
+                String lineType = queryKeyWord;
+                String lineId = queryKeyWord;
+                String companyName = queryKeyWord;
+                goodPage = goodService.findGoodsByLineNameContainingOrLineTypeContainingOrCompany_CompanyNameContaining(lineName, lineType, lineId, companyName,pageable);
+            }
+        }else{
+            if(queryKeyWord == null || queryKeyWord.equals("")){
+                goodPage = goodService.queryGoodByPageByState(pageable,state);
+            }else {
+                String lineName = queryKeyWord;
+                String lineType = queryKeyWord;
+                String lineId = queryKeyWord;
+                String companyName = queryKeyWord;
+                goodPage = goodService.findGoodsByStateAndLineNameOrLineTypeOrLineIdOrCompanyNameContaining(state, lineName, lineType, lineId, companyName,pageable);
+            }
         }
+//        if(queryKeyWord == null || queryKeyWord.equals("")){
+//            goodPage = goodService.queryGoodByPageByState(pageable,state);
+//        }else {
+//            String lineName = queryKeyWord;
+//            String lineType = queryKeyWord;
+//            String lineId = queryKeyWord;
+//            String companyName = queryKeyWord;
+//            goodPage = goodService.findGoodsByStateAndLineNameOrLineTypeOrLineIdOrCompanyNameContaining(state, lineName, lineType, lineId, companyName,pageable);
+//        }
 
         return goodPage;
     }
@@ -82,6 +105,13 @@ public class GoodController {
     @Transactional
     public ResponseEntity addGood(@RequestBody List<GoodDto> goodDtoList){
         ResponseEntity response = goodService.addGood(goodDtoList);
+        return response;
+    }
+
+    @Transactional
+    @PutMapping("/good")
+    public ResponseEntity updateGood(@RequestBody GoodDto goodDto){
+        ResponseEntity response = goodService.updateGood(goodDto);
         return response;
     }
 }

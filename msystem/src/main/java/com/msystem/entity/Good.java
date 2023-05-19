@@ -40,7 +40,7 @@ public class Good {
     private BigDecimal totalProfit;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date sDate;
-    private int state = 1; // 1:已收貨，2:生產中，3：待發貨，3：已發貨
+    private int state = 1; // 1:已收貨，2:生產中，3：待發貨，4：已發貨
 
     public void setTotalPrice() {
         //使用Optional避免空指針異常
