@@ -53,6 +53,11 @@ public class GoodServiceImpl implements GoodService {
         List<Good> goodList = goodRepository.findAll();
         return goodList;
     }
+    @Override
+    public Page<Good> queryAllGoodPage(PageRequest pageable) {
+        Page<Good> goodPage = goodRepository.findAll(pageable);
+        return goodPage;
+    }
 
     @Override
     public ResponseEntity addGood(List<GoodDto> goodDtoList) {
@@ -60,7 +65,7 @@ public class GoodServiceImpl implements GoodService {
         int isExist = 0; //0代表lineId存在，1代表不存在
         if(!goodDtoList.isEmpty()){
             for (int i = 0; i < goodDtoList.size(); i++) {
-                if (goodRepository.findBylineId(goodDtoList.get(i).getLineId()) == null && isExist == 0) {
+                if (goodRepository.findBylineId(goodDtoList.get(i).getLineId()) == null && isExist == 0) {  //isExit = 0 修改Good
                     Good good = new Good();
                     Optional<Company> optionalCompany = companyRepository.findById(goodDtoList.get(i).getCompanyId());
                     good.setLineId(goodDtoList.get(i).getLineId());
@@ -70,6 +75,7 @@ public class GoodServiceImpl implements GoodService {
                     good.setTotalCount(goodDtoList.get(i).getTotalCount());
                     good.setUnitPrice(goodDtoList.get(i).getUnitPrice());
                     good.setCompany(optionalCompany.orElse(null));
+                    good.setState(1);
                     goodList.add(good);
                 } else {
                     isExist = 1;
@@ -87,14 +93,50 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public Page<Good> queryGoodByPage(PageRequest pageable) {
-        Page<Good> goodPage = goodRepository.findAll(pageable);
+    public Page<Good> queryGoodByPageByState(PageRequest pageable,Integer state) {
+        if (state != null){
+            Page<Good> goodPage = goodRepository.findByState(state, pageable);
+            return goodPage;
+        }else{
+            Page<Good> goodPage = goodRepository.findAll(pageable);
+            return goodPage;
+        }
+    }
+
+    @Override
+    public Page<Good> findGoodsByStateAndLineNameOrLineTypeOrLineIdOrCompanyNameContaining(Integer state, String lineName, String lineType, String lineId, String companyName, Pageable pageable) {
+        Page<Good> goodPage = goodRepository.findGoodsByStateAndLineNameOrLineTypeOrLineIdOrCompanyNameContaining(state, lineName,lineType,lineId,companyName, pageable);
         return goodPage;
     }
 
     @Override
-    public Page<Good> findByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(String lineName, String lineType, String lineId, String companyName, Pageable pageable) {
-        Page<Good> goodPage = goodRepository.findByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(lineName,lineType,lineId,companyName, pageable);
+    public Page<Good> findGoodsByLineNameContainingOrLineTypeContainingOrCompany_CompanyNameContaining(String lineName, String lineType, String lineId, String companyName, Pageable pageable) {
+        Page<Good> goodPage = goodRepository.findGoodsByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(lineName,lineType,lineId,companyName, pageable);
+        System.out.println(goodPage);
         return goodPage;
+    }
+
+    @Override
+    public ResponseEntity updateGood(GoodDto goodDto) {
+        //獲取資料庫中good信息
+        Optional<Good> goodOptional = goodRepository.findById(goodDto.getGId());
+        Good good = goodOptional.orElse(null);
+        //獲取goodDto中的廠商信息
+        Integer companyId = goodDto.getCompanyId();
+        Optional<Company> optionalCompany = companyRepository.findById(goodDto.getCompanyId());
+        //保存修改資料到資料庫中
+        assert good != null;
+        good.setLineId(goodDto.getLineId());
+        good.setLineName(goodDto.getLineName());
+        good.setLineType(goodDto.getLineType());
+        good.setPDate(goodDto.getPDate());
+        good.setTotalCount(goodDto.getTotalCount());
+        good.setUnitPrice(goodDto.getUnitPrice());
+        good.setCompany(optionalCompany.orElse(null));
+        if(goodDto.getSDate() != null){
+            good.setSDate(goodDto.getSDate());
+            good.setState(4);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("修改完成");
     }
 }

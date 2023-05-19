@@ -352,6 +352,14 @@ export default {
                         meta:{role: ['1']}
                     },
                     {
+                        path: '/lineProcessManagement',
+                        name: 'lineProcessManagement',
+                        label: '生產管理',
+                        icon: 'setting',
+                        url: 'management/lineProcessManagement',
+                        meta:{role: ['1']}
+                    },
+                    {
                         path: '/lineshipping',
                         name: 'lineshipping',
                         label: '線材出貨',
@@ -359,14 +367,14 @@ export default {
                         url: 'management/lineshipping',
                         meta:{role: ['1']}
                     },
-                    {
-                        path: '/linereturn',
-                        name: 'linereturn',
-                        label: '線材退貨',
-                        icon: 'setting',
-                        url: 'management/linereturn',
-                        meta:{role: ['1']}
-                    },
+                    // {
+                    //     path: '/linereturn',
+                    //     name: 'linereturn',
+                    //     label: '線材退貨',
+                    //     icon: 'setting',
+                    //     url: 'management/linereturn',
+                    //     meta:{role: ['1']}
+                    // },
                     {
                         path: '/linemanagement',
                         name: 'linemanagement',

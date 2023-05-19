@@ -4,6 +4,7 @@ import Home from '../views/Home'
 import UserHome from '../views/UserHome'
 import LineManagement from '../views/LineManagement'
 import LineProcess from '../views/LineProcess'
+import LineProcessManagement from '../views/LineProcessManagement'
 import LinePurchase from '../views/LinePurchase'
 import LineReturn from '../views/LineReturn'
 import LineShipping from '../views/LineShipping'
@@ -31,11 +32,12 @@ const router = new VueRouter({
                 {path: 'home',component: Home,meta:{role: ['1']}},
                 {path: 'userhome',component: UserHome,meta:{role: ['2']}},
                 {path: 'lineprocess',component: LineProcess,meta:{role: ['1', '2']}},
+                {path: 'lineProcessManagement',component: LineProcessManagement,meta:{role: ['1', '2']}},
                 {path: 'prepayroll',component: PrePayroll,meta:{role:['2']}},
                 {path: 'payroll',component: Payroll,meta:{role:['2']}},
                 {path: 'linepurchase',component: LinePurchase,meta:{role:['1']}},
                 {path: 'lineshipping',component: LineShipping,meta:{role:['1']}},
-                {path: 'linereturn',component: LineReturn,meta:{role:['1']}},
+                // {path: 'linereturn',component: LineReturn,meta:{role:['1']}},
                 {path: 'linemanagement',component: LineManagement,meta:{role:['1']}},
                 {path: 'payrollmanagement',component: PayrollManagement,meta:{role:['1']}},
                 {path: 'workermanagement',component: WorkerManagement,meta:{role:['1']}},

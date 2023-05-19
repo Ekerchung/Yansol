@@ -17,7 +17,14 @@
           <el-input v-model="form.checkpass" type="password"  placeholder="請確認密碼"></el-input>
         </el-form-item>
         <el-form-item label="權限" prop="role" >
-          <el-input v-model="form.role"  placeholder="1：管理員，2：一般用戶"></el-input>
+          <el-select v-model="form.role" placeholder="請選擇帳號權限">
+            <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="帳號所有人" prop="eId" >
           <el-select v-model="form.employee.eid" style="width: 250px" placeholder="請選擇員工">
@@ -80,7 +87,7 @@
             label="權限"
             width="240">
           <template slot-scope="scope">
-            <span>{{ scope.row.role == 1 ? '管理員' : '一般使用者' }}</span>
+            <span>{{ scope.row.role == 1 ? '管理員' : '普通用戶' }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -144,7 +151,7 @@ export default {
         username: '',
         password: '',
         checkpass: '',
-        role: '',
+        role: 2, //新增帳號權限，默認為一般用戶。1；管理員 ，2；一般使用者
         eId: '',
         employee:{
           eid:''
@@ -164,18 +171,36 @@ export default {
         role: [
           { required: true, message: '請輸入權限', trigger: 'blur' },
         ],
+        eId: [
+          { required: true, message: '請選擇員工', trigger: 'blur' },
+        ],
       },
       modelType:0, //0：新增窗口，1：修改窗口
       //查詢功能信息
       queryForm:{
         queryKeyword:'',
       },
+    //   options: [{
+    //     value: '1',
+    //     label: '管理員'
+    //   }, {
+    //     value: '2',
+    //     label: '一般用戶'
+    //   }],
     }
   },
 
   computed: {
     ...mapState('account',['accountPageData']),
     ...mapState('data',['employeeData']),
+    // computed: {
+      options() {
+        return [
+          { value: 1, label: '管理員' },
+          { value: 2, label: '普通用戶' },
+        ]
+      },
+    // },
   },
   methods:{
     ...mapActions('data',['fetchGoodData','fetchCompanyData','fetchEmployeeData','fetchOrderData','fetchReturnData']),
@@ -195,8 +220,10 @@ export default {
       //顯示彈窗
       this.dialogFormVisible = true;
       //【重要】使用深拷貝row資料來回顯到編輯窗口，若不使用深拷貝，則編輯的資料會與表格資料連動，會有錯誤
-      this.form = JSON.parse(JSON.stringify(row));
-      // console.log(this.form)
+      //使用$nextTick解決添加和修改共用一個表單時就會出現重置無效的情況
+      this.$nextTick(() => {
+        this.form = JSON.parse(JSON.stringify(row));
+      });
     },
     //點擊刪除時操作
     handleDelete(row) {
@@ -235,18 +262,17 @@ export default {
           this.form.eId = this.form.employee.eid
           //新增或修改員工資料
           this.fetchUpdateAccount(this.form);
+          //關閉彈窗
+          this.dialogFormVisible = false;
+          //清空form表單的數據
+          setTimeout(() => {
+            //重新查詢數據庫資料，更新數據
+            this.fetchGetAccountPageData({'pageNum':this.currentPage});
+            // this.$refs.form.resetFields();
+            this.$refs.form.resetFields();
+            this.form.employee.eid = '';
+          }, 200);
         }
-        //關閉彈窗
-        this.dialogFormVisible = false;
-        //清空form表單的數據
-        setTimeout(() => {
-          //重新查詢數據庫資料，更新數據
-          this.fetchGetAccountPageData({'pageNum':this.currentPage});
-          // this.$refs.form.resetFields();
-          this.$refs.form.resetFields();
-          this.form.employee.eid = '';
-        }, 200);
-
       })
     },
     //切換分頁

@@ -6,6 +6,12 @@ export const getGoodData = () => {
 export const getGoodPageData = (params) => {
   return http.get('/page/good',{ params:  params })
 }
+export const addLineData = (data) => {
+  return http.post('/good', data)
+}
+export const updateGood = (data) => {
+  return http.put('/good', data)
+}
 export const getCompanyData = () => {
   return http.get('/company')
 }
@@ -14,6 +20,9 @@ export const getEmployeeData = () => {
 }
 export const getOrderData = () => {
   return http.get('/order')
+}
+export const getOrderQueryData = (params) => {
+  return http.get('/order',{ params:  params })
 }
 export const getReturnData = () => {
   return http.get('/returngood')
@@ -45,6 +54,16 @@ export const getAccountPageData = (params) => {
 export const userLogin = (params) => {
   return http.get('/login', { params:  params })
 }
-export const addLineData = (data) => {
-  return http.post('/good', data)
+
+export const addOrder = (data) => {
+  return http.post('/order', data)
+}
+export const updateOrder = (data) => {
+  return http.put('/order', data)
+}
+export const getOrderPageData = (params) => {
+  return http.get('/page/order', { params:  params })
+}
+export const deleteOrder = (id) => {
+  return http.delete(`/order/${id}`, )
 }

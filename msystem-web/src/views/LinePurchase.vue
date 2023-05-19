@@ -16,17 +16,17 @@
             style="width: 100%">
           <el-table-column label="序号" align="center" prop="id" width="50"></el-table-column>
           <el-table-column
-              prop="p_date"
+              prop="pDate"
               label="進貨日"
               width="160">
             <template slot-scope="scope">
               <!-- prop的規則: 在普通的form表單中是一個對象,prop是對象的屬性. 表格是由多個對象組成的數組,在寫prop是需要根據索引給值.這里的tableData就相當於對象的屬性 !-->
               <!-- rules也要單獨給 -->
               <el-form-item
-                  :prop="'tableData.' + scope.$index + '.p_date'"
-                  :rules='purchaseForm.rules.p_date'>
+                  :prop="'tableData.' + scope.$index + '.pDate'"
+                  :rules='purchaseForm.rules.pDate'>
                 <el-date-picker
-                    v-model="purchaseForm.tableData[scope.row.id-1].p_date"
+                    v-model="purchaseForm.tableData[scope.row.id-1].pDate"
                     value-format="yyyy-MM-dd"
                     placeholder="選擇日期">
                 </el-date-picker>
@@ -34,14 +34,14 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop= "company_name"
+              prop= "companyName"
               label="進貨廠商"
               width="180">
             <template slot-scope="scope">
               <el-form-item
-                  :prop="'tableData.' + scope.$index + '.company_name'"
-                  :rules='purchaseForm.rules.company_name'>
-                <el-select v-model="purchaseForm.tableData[scope.row.id-1].company_name" placeholder="請選擇">
+                  :prop="'tableData.' + scope.$index + '.companyName'"
+                  :rules='purchaseForm.rules.companyName'>
+                <el-select v-model="purchaseForm.tableData[scope.row.id-1].companyName" placeholder="請選擇">
                   <el-option
                       v-for="item in companyData"
                       :key="item.companyId"
@@ -53,14 +53,14 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="line_id"
+              prop="lineId"
               label="線材編號"
               width="150">
             <template slot-scope="scope">
               <el-form-item
-                  :prop="'tableData.' + scope.$index + '.line_id'"
-                  :rules='purchaseForm.rules.line_id'>
-                <el-input v-model="purchaseForm.tableData[scope.row.id-1].line_id"
+                  :prop="'tableData.' + scope.$index + '.lineId'"
+                  :rules='purchaseForm.rules.lineId'>
+                <el-input v-model="purchaseForm.tableData[scope.row.id-1].lineId"
                           oninput="value=value.replace(/[^\d]/g,'')"
                           placeholder="請輸入線材編號">
 
@@ -69,14 +69,14 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="line_type"
+              prop="lineType"
               label="端子"
               width="340">
             <template slot-scope="scope">
               <el-form-item
-                  :prop="'tableData.' + scope.$index + '.line_type'"
-                  :rules='purchaseForm.rules.line_type'>
-                <el-input v-model="purchaseForm.tableData[scope.row.id-1].line_type"
+                  :prop="'tableData.' + scope.$index + '.lineType'"
+                  :rules='purchaseForm.rules.lineType'>
+                <el-input v-model="purchaseForm.tableData[scope.row.id-1].lineType"
                           placeholder="請輸入端子">
 
                 </el-input>
@@ -84,14 +84,14 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="line_name"
+              prop="lineName"
               label="品項"
               width="340">
             <template slot-scope="scope">
               <el-form-item
-                  :prop="'tableData.' + scope.$index + '.line_name'"
-                  :rules='purchaseForm.rules.line_name'>
-                <el-input v-model="purchaseForm.tableData[scope.row.id-1].line_name"
+                  :prop="'tableData.' + scope.$index + '.lineName'"
+                  :rules='purchaseForm.rules.lineName'>
+                <el-input v-model="purchaseForm.tableData[scope.row.id-1].lineName"
                           placeholder="請輸入品項">
 
                 </el-input>
@@ -99,14 +99,14 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="total_count"
+              prop="totalCount"
               label="進貨數量"
               width="150">
             <template slot-scope="scope">
               <el-form-item
-                  :prop="'tableData.' + scope.$index + '.total_count'"
-                  :rules='purchaseForm.rules.total_count'>
-                <el-input v-model="purchaseForm.tableData[scope.row.id-1].total_count"
+                  :prop="'tableData.' + scope.$index + '.totalCount'"
+                  :rules='purchaseForm.rules.totalCount'>
+                <el-input v-model="purchaseForm.tableData[scope.row.id-1].totalCount"
                           oninput="value=value.replace(/[^\d]/g,'')"
                           placeholder="請輸入數量">
 
@@ -115,14 +115,14 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="unit_price"
+              prop="unitPrice"
               label="進貨單價"
               width="150">
             <template slot-scope="scope">
               <el-form-item
-                  :prop="'tableData.' + scope.$index + '.unit_price'"
-                  :rules='purchaseForm.rules.unit_price'>
-                <el-input v-model="purchaseForm.tableData[scope.row.id-1].unit_price"
+                  :prop="'tableData.' + scope.$index + '.unitPrice'"
+                  :rules='purchaseForm.rules.unitPrice'>
+                <el-input v-model="purchaseForm.tableData[scope.row.id-1].unitPrice"
                           oninput="value=value.replace(/[^\d]/g,'')"
                           placeholder="請輸入單價">
 
@@ -154,32 +154,32 @@ export default {
     return{
       purchaseForm:{
         tableData: [{
-          p_date: '',
-          company_name: '',
-          line_id: '',
-          line_type: '',
-          line_name: '',
-          total_count: '',
-          unit_price: '',
+          pDate: '',
+          companyName: '',
+          lineId: '',
+          lineType: '',
+          lineName: '',
+          totalCount: '',
+          unitPrice: '',
         },],
 
         rules: {
-          company_name: [
+          companyName: [
             { required: true, message: '請選擇進貨廠商', trigger: 'change' }
           ],
-          line_id: [
+          lineId: [
             { required: true, message: '請輸入線材編號', trigger: 'blur' }
           ],
-          line_type: [
+          lineType: [
             { required: true, message: '請輸入端子', trigger: 'blur' }
           ],
-          line_name: [
+          lineName: [
             { required: true, message: '請輸入品項', trigger: 'blur' }
           ],
-          total_count: [
+          totalCount: [
             { required: true, message: '請輸入進貨數量', trigger: 'blur' }
           ],
-          unit_price: [
+          unitPrice: [
             { required: true, message: '請輸入進貨單價', trigger: 'blur' }
           ],
         }
@@ -195,13 +195,13 @@ export default {
     //添加一行表單
     addTable () {
       let newRowData = {
-        p_date: '',
-        company_name: '',
-        line_id: '',
-        line_type: '',
-        line_name: '',
-        total_count: '',
-        unit_price: '',
+        pDate: '',
+        companyName: '',
+        lineId: '',
+        lineType: '',
+        lineName: '',
+        totalCount: '',
+        unitPrice: '',
       }
       this.purchaseForm.tableData.push(newRowData);
     },
@@ -221,13 +221,13 @@ export default {
           setTimeout(() => {
             //重置表單數據
             this.purchaseForm.tableData = [{
-              p_date: '',
-              company_name: '',
-              line_id: '',
-              line_type: '',
-              line_name: '',
-              total_count: '',
-              unit_price: '',
+              pDate: '',
+              companyName: '',
+              lineId: '',
+              lineType: '',
+              lineName: '',
+              totalCount: '',
+              unitPrice: '',
             },];
             this.$refs.purchaseForm.resetFields();
           }, 2000);

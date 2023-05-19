@@ -1,6 +1,7 @@
 package com.msystem;
 
 import com.msystem.entity.*;
+import com.msystem.repository.OrderRepository;
 import com.msystem.service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ class MsystemApplicationTests {
     private EmployeeService employeeService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrderRepository orderRepository;
     @Autowired
     private ReturnGoodService returnGoodService;
     @Autowired
@@ -70,10 +73,14 @@ class MsystemApplicationTests {
     @Test
     @Transactional
     void testOrder() {
-        List<Order> orderList = orderService.queryAllOrder();
-        System.out.println(orderList);
+//        List<Order> orderList = orderService.queryAllOrder();
+//        System.out.println(orderList);
 //        Optional<Order> order = orderService.queryOrderById(3);
 //        System.out.println(order.orElse(null));
+
+        List<Order> orderList = orderRepository.findByGood_LineIdAndState("112040602", 1);
+        System.out.println(orderList);
+        System.out.println(orderList.isEmpty());
 
     }
     @Test

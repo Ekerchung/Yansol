@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * @Description: Order的實體類容器
@@ -18,7 +19,7 @@ import java.util.Date;
 @Table(name = "t_order")
 public class Order {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int oId;
     @ManyToOne
     @JoinColumn(name = "g_id")
@@ -33,5 +34,23 @@ public class Order {
     private Employee employee;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date comDate;
+    private int state = 1; //1：生產中 2：完成
 
+
+    public void setOTotalPrice() {
+        //使用Optional避免空指針異常
+        this.oTotalPrice = Optional.ofNullable(oUnitPrice)
+                .map(price -> price.multiply(BigDecimal.valueOf(oCount)))
+                .orElse(BigDecimal.ZERO);
+    }
+
+    public void setOUnitPrice(BigDecimal UnitPrice) {
+        this.oUnitPrice = UnitPrice;
+        setOTotalPrice();  // 在設置 oUnitPrice 屬性時調用 setoTotalPrice() 方法
+    }
+
+    public void setOCount(int oCount) {
+        this.oCount = oCount;
+        setOTotalPrice();  // 在設置 oCount 屬性時調用 setoTotalPrice() 方法
+    }
 }
