@@ -21,11 +21,26 @@ public class CompanyController {
     @Autowired
     CompanyService companyService;
 
+    /**
+     * @titile: queryCompanyById
+     * @description: 依廠商id查詢廠商信息
+     * @param id 廠商id
+     * @return: Company 廠商信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 04:38
+     */
     @GetMapping(value = "/company/{id}")
     public Company queryCompanyById(@PathVariable("id") Integer id){
         Optional<Company> company = companyService.queryCompanyById(id);
         return company.orElse(null);
     }
+    /**
+     * @titile: queryAllCompany
+     * @description: 查詢全部廠商信息
+     * @return: List<Company> 廠商信息列表
+     * @author: Eker
+     * @date: 2023/5/23 下午 04:38
+     */
     @GetMapping(value = "/company")
     public List<Company> queryAllCompany(){
         List<Company> companyList = companyService.queryAllCompany();

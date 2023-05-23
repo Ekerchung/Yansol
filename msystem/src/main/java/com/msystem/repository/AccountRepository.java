@@ -15,6 +15,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @version: V1.0
  */
 public interface AccountRepository extends JpaRepository<Account, Integer> {
+    //確認輸入的帳號密碼是否正確
     Account findByUsernameAndPassword(String username,String password);
+    //依帳號名查詢帳號信息
     Page<Account> findByUsernameContaining(String username, Pageable pageable);
+
 }

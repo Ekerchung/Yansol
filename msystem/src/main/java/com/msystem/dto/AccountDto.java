@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * @Description: Account的接收類容器
+ * @Description: Account的Dto容器
  * @author: Eker
  * @date: 2023/5/5 下午 08:08
  * @version: V1.0

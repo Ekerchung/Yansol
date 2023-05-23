@@ -20,20 +20,20 @@ import java.util.Optional;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int oId;
+    private int oId; //生產訂單id
     @ManyToOne
     @JoinColumn(name = "g_id")
-    private Good good;
+    private Good good; //線材信息
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date oDate;
-    private int oCount;
-    private BigDecimal oUnitPrice;
-    private BigDecimal oTotalPrice;
+    private Date oDate; //生產訂單日期
+    private int oCount; //生產訂單數量
+    private BigDecimal oUnitPrice; //生產訂單單價
+    private BigDecimal oTotalPrice; //生產訂單總價
     @ManyToOne
     @JoinColumn(name = "e_id")
-    private Employee employee;
+    private Employee employee; //員工信息
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date comDate;
+    private Date comDate; //生產訂單完成時間
     private int state = 1; //1：生產中 2：完成
 
 

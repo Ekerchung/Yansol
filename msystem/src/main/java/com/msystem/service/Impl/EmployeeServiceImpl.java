@@ -23,17 +23,40 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    /**
+     * @titile: queryAllEmployee
+     * @description: 查詢全部員工信息
+     * @return: List<Employee> 員工信息列表
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:28
+     */
     @Override
     public List<Employee> queryAllEmployee() {
         List<Employee> employeeList = employeeRepository.findAll();
         return employeeList;
     }
 
+    /**
+     * @titile: queryEmployeeById
+     * @description: 根據id查詢員工信息
+     * @param id 員工id
+     * @return: Optional<Employee> 員工信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:29
+     */
     @Override
     public Optional<Employee> queryEmployeeById(Integer id) {
         Optional<Employee> employee = employeeRepository.findById(id);
         return employee;
     }
+    /**
+     * @titile: updateEmployee
+     * @description: 更新員工信息
+     * @param emp 員工信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:30
+     */
     @Override
     public void updateEmployee(Employee emp) {
         if(emp.getEId() != 0){
@@ -54,6 +77,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    /**
+     * @titile: deleteEmployee
+     * @description: 刪除員工信息
+     * @param id 根據id刪除員工信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:30
+     */
     @Override
     public void deleteEmployee(Integer id) {
         employeeRepository.deleteById(id);
@@ -64,6 +94,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeePage;
     }
 
+    /**
+     * @titile: findByENameContainingOrAddressContainingOrPhoneContaining
+     * @description: 模糊查詢員工名、地址、電話
+     * @param eName 查詢關鍵字
+     * @param address 查詢關鍵字
+     * @param phone 查詢關鍵字
+     * @param pageable 分頁參數
+     * @return: Page<Employee> 員工的分頁信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:31
+     */
     @Override
     public Page<Employee> findByENameContainingOrAddressContainingOrPhoneContaining(String eName, String address, String phone, Pageable pageable) {
         Page<Employee> employeePage = employeeRepository.findByeNameContainingOrAddressContainingOrPhoneContaining(eName, address, phone, pageable);

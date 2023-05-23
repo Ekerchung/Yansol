@@ -21,15 +21,9 @@ import javax.persistence.*;
 public class Company {
     @Id
     @GeneratedValue
-    private int companyId;
-    private String companyName;
-    private String companyTel;
-    private String companyAddress;
-//    @OneToOne(mappedBy = "company")
-//    @JsonIgnore //忽略good實體的查詢，避免死循環
-//    @ToString.Exclude
-//    @ManyToOne
-//    @JoinColumn(name = "g_id")
-//    private Good good;
+    private int companyId; //廠商id
+    private String companyName; //廠商名稱
+    private String companyTel; //廠商電話
+    private String companyAddress; //廠商地址
 
 }

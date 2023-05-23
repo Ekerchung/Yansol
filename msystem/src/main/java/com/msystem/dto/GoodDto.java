@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * @Description: Good的DTO類
+ * @Description: Good的Dto容器
  * @author: Eker
  * @date: 2023/5/11 上午 01:35
  * @version: V1.0

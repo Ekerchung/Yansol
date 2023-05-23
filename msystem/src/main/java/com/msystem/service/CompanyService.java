@@ -12,6 +12,8 @@ import java.util.Optional;
  * @version: V1.0
  */
 public interface CompanyService {
+    //依廠商id查詢廠商信息
     Optional<Company> queryCompanyById(Integer id);
+    //查詢全部廠商信息
     List<Company> queryAllCompany();
 }

@@ -34,13 +34,15 @@ public class GoodServiceImpl implements GoodService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    @Override
-    public void addOrder(){
-        Good good = new Good();
-        good.setTotalCount(500);
-        goodRepository.save(good);
-    }
 
+    /**
+     * @titile: queryGoodById
+     * @description: 根據id查詢線材信息
+     * @param id 線材id
+     * @return: Optional<Good> 線材信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:34
+     */
     @Override
     public Optional<Good> queryGoodById(int id) {
         Optional<Good> good = goodRepository.findById(id);
@@ -48,17 +50,40 @@ public class GoodServiceImpl implements GoodService {
 
     }
 
+    /**
+     * @titile: queryAllGood
+     * @description: 查詢全部線材信息
+     * @return: List<Good> 線材信息列表
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:34
+     */
     @Override
     public List<Good> queryAllGood() {
         List<Good> goodList = goodRepository.findAll();
         return goodList;
     }
+    /**
+     * @titile: queryAllGoodPage
+     * @description: 查詢全部線材分頁信息
+     * @param pageable 分頁參數
+     * @return: Page<Good> 線材分頁信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:35
+     */
     @Override
     public Page<Good> queryAllGoodPage(PageRequest pageable) {
         Page<Good> goodPage = goodRepository.findAll(pageable);
         return goodPage;
     }
 
+    /**
+     * @titile: addGood
+     * @description: 新增線材
+     * @param goodDtoList 新增線材分頁列表
+     * @return: ResponseEntity 響應給前端狀態碼及body資訊
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:36
+     */
     @Override
     public ResponseEntity addGood(List<GoodDto> goodDtoList) {
         List<Good> goodList = new ArrayList<>();
@@ -92,6 +117,15 @@ public class GoodServiceImpl implements GoodService {
 
     }
 
+    /**
+     * @titile: queryGoodByPageByState
+     * @description: 根據線材狀態查詢線材分頁信息
+     * @param pageable 分頁參數
+     * @param state 線材狀態
+     * @return: Page<Good> 線材分頁信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:38
+     */
     @Override
     public Page<Good> queryGoodByPageByState(PageRequest pageable,Integer state) {
         if (state != null){
@@ -103,12 +137,37 @@ public class GoodServiceImpl implements GoodService {
         }
     }
 
+    /**
+     * @titile: findGoodsByStateAndLineNameOrLineTypeOrLineIdOrCompanyNameContaining
+     * @description: 根據關鍵字模糊查詢某線材狀態下的線材信息
+     * @param state 線材狀態
+     * @param lineName 線材狀態
+     * @param lineType 線材狀態
+     * @param lineId 線材編號
+     * @param companyName 廠商名稱
+     * @param pageable 分頁參數
+     * @return: Page<Good> 線材分頁信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:40
+     */
     @Override
     public Page<Good> findGoodsByStateAndLineNameOrLineTypeOrLineIdOrCompanyNameContaining(Integer state, String lineName, String lineType, String lineId, String companyName, Pageable pageable) {
         Page<Good> goodPage = goodRepository.findGoodsByStateAndLineNameOrLineTypeOrLineIdOrCompanyNameContaining(state, lineName,lineType,lineId,companyName, pageable);
         return goodPage;
     }
 
+    /**
+     * @titile: findGoodsByLineNameContainingOrLineTypeContainingOrCompany_CompanyNameContaining
+     * @description: 根據關鍵字模糊查詢線材信息
+     * @param lineName 線材狀態
+     * @param lineType 線材狀態
+     * @param lineId 線材編號
+     * @param companyName 廠商名稱
+     * @param pageable 分頁參數
+     * @return: Page<Good> 線材分頁信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:42
+     */
     @Override
     public Page<Good> findGoodsByLineNameContainingOrLineTypeContainingOrCompany_CompanyNameContaining(String lineName, String lineType, String lineId, String companyName, Pageable pageable) {
         Page<Good> goodPage = goodRepository.findGoodsByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(lineName,lineType,lineId,companyName, pageable);
@@ -116,6 +175,14 @@ public class GoodServiceImpl implements GoodService {
         return goodPage;
     }
 
+    /**
+     * @titile: updateGood
+     * @description: 更新線材信息
+     * @param goodDto 輸入的線材信息
+     * @return: ResponseEntity 響應給前端狀態碼及body資訊
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:43
+     */
     @Override
     public ResponseEntity updateGood(GoodDto goodDto) {
         //獲取資料庫中good信息
