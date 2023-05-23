@@ -1,30 +1,21 @@
-import {updateOrder, getOrderPageData, deleteOrder,addOrder,getOrderQueryData} from "../api";
+import {updateOrder, getOrderPageData, deleteOrder, addOrder, getOrderQueryData, getOrderDataByEidByDate} from "../api";
 
 export default {
     namespaced:true,
     actions:{
         fetchAddOrder(context,data) {
-            console.log('fetchAddOrder',data);
             return addOrder(data)
                 .then((response) => {
-                    console.log('添加完成')
+                    // console.log('添加完成')
                 })
                 .catch((error) => {
                     console.error(error)
                 })
         },
         fetchUpdateOrder(context,data) {
-            console.log('fetchUpdateOrder',data);
-            return updateOrder(data)
-                .then((response) => {
-                    console.log('添加完成')
-                })
-                .catch((error) => {
-                    console.error(error)
-                })
+            return updateOrder(data)//此處不獲取response、error，交由調用頁面獲取
         },
         fetchOrderPageData(context,data) {
-            console.log('fetchOrderPageData',data)
             return getOrderPageData(data)
                 .then((response) => {
                     context.commit('setOrderPageData', response.data)
@@ -33,8 +24,16 @@ export default {
                     console.error(error)
                 })
         },
+        fetchGetOrderDataByEidByDate(context,data) {
+            return getOrderDataByEidByDate(data)
+                .then((response) => {
+                    context.commit('setOrderQueryDataByUser', response.data);
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+        },
         fetchOrderQueryData(context,data) {
-            console.log('fetchOrderQueryData',data)
             return getOrderQueryData(data)
                 .then((response) => {
                     context.commit('setOrderQueryData', response.data)
@@ -44,7 +43,6 @@ export default {
                 })
         },
         fetchDeleteOrder(context,data) {
-            console.log('fetchDeleteOrder',data)
             return deleteOrder(data)
                 .then((response) => {
                     context.commit('deleteOrder', response.data)
@@ -54,24 +52,22 @@ export default {
                 })
         }
     },
-    // getters: {
-    //     getOrderPageDataFilterComplete(state){
-    //         let orderPageDataFilter = state.orderPageData.content.filter(o => o.comDate === null);
-    //         return orderPageDataFilter;
-    //     }
-    // },
+    getters: {
+    },
     mutations:{
         setOrderPageData(state, data) { // 添加orderPageData數據
             state.orderPageData = data;
-            console.log('調用了setOrderPageData')
         },
         setOrderQueryData(state, data) { // 添加orderQueryData數據
             state.orderQueryData = data;
-            console.log('調用了setOrderQueryData')
+        },
+        setOrderQueryDataByUser(state, data) { // 添加orderQueryDataByUser數據
+            state.orderQueryDataByUser = data;
         },
     },
     state:{
         orderPageData: [],
         orderQueryData: [],
+        orderQueryDataByUser: [],
     }
 }

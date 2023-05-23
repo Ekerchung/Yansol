@@ -1,9 +1,11 @@
 <template>
   <el-row>
+<!--    頁面左半邊-->
     <el-col :span="9" style="padding-right: 10px">
+<!--      帳號信息-->
       <el-card class="box-card" style="height: 255px">
         <div class="user">
-          <img src="../assets/images/male.png" alt="">
+          <img :src=imgPath alt="">
           <div class="userinfo">
             <p class="name">{{employee.name}}</p>
             <p class="access">超级管理员</p>
@@ -13,12 +15,14 @@
           <p>上次登錄時間：<span>{{lastLoginTime}}</span></p>
         </div>
       </el-card>
+<!--      未完成線材清單-->
       <el-card style="margin-top: 20px;height: 550px;">
         <el-table
             :data="goodData"
             height="510"
             stripe
             size="small"
+            empty-text="暫無數據"
             style="width: 100%">
           <el-table-column
               prop="pdate"
@@ -47,7 +51,9 @@
         </el-table>
       </el-card>
      </el-col>
+<!--    頁面右半邊-->
     <el-col :span="15" style="padding-left: 10px">
+<!--      顯示線材進出貨相關信息-->
       <div class="num">
         <el-card v-for="item in countData" :key="item.name" :body-style="{ display: 'flex', padding: 0 }">
           <i class="icon" :class="`el-icon-${item.icon}`" :style="{ background: item.color }"></i>
@@ -58,10 +64,12 @@
           </div>
         </el-card>
       </div>
+<!--      顯示營運圖表資訊-->
       <el-card style="height: 300px">
         <!-- 每月營收折線圖 -->
         <div ref="echarts1" class="echarts1" style="height: 320px"></div>
       </el-card>
+<!--      顯示營運圖表資訊-->
       <div class="graph">
         <el-card style="height: 340px">
           <!-- 廠商收入柱狀圖 -->
@@ -84,6 +92,8 @@ export default {
   data() {
     return {
       employee: {},
+      username:'',
+      imgPath:'',
       lastLoginTime: '',
     }
   },
@@ -111,6 +121,9 @@ export default {
     this.fetchEmployeeData();
     this.fetchOrderData();
     this.fetchReturnData();
+    //動態獲取帳號圖像
+    this.username = localStorage.getItem('username');
+    this.imgPath = require(`@/assets/images/${this.username}.png`);
   },
   methods:{
     ...mapActions('data',['fetchGoodData','fetchCompanyData','fetchEmployeeData','fetchOrderData','fetchReturnData']),

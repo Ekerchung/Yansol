@@ -40,7 +40,7 @@
     </el-dialog>
     <div class="manage-header">
       <!--新增按鈕-->
-      <el-button type="primary" @click="dialogFormVisible = true">+ 新增</el-button>
+      <el-button type="primary" @click="handleAdd">+ 新增</el-button>
       <el-form :inline="true" :model="queryForm">
         <el-form-item>
           <el-input v-model="queryForm.queryKeyword" placeholder="輸入帳號"></el-input>
@@ -51,11 +51,12 @@
       </el-form>
     </div>
     <div class="common-tabel">
-      <!--    人員管理表格-->
+      <!--    帳號管理表格-->
       <el-table
           :data="accountPageData.content"
           height="90%"
           stripe
+          empty-text="暫無數據"
           style="width: 100%">
         <el-table-column
             prop="username"
@@ -122,6 +123,7 @@ import {mapActions, mapMutations, mapState} from 'vuex';
 export default {
   name:'AccountManagement',
   data(){
+    //驗證密碼不為空
     let validatePass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('請輸入密碼'));
@@ -132,6 +134,7 @@ export default {
         callback();
       }
     };
+    //驗證再次輸入密碼是否與密碼相符
     let validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('請再次輸入密碼'));
@@ -180,27 +183,19 @@ export default {
       queryForm:{
         queryKeyword:'',
       },
-    //   options: [{
-    //     value: '1',
-    //     label: '管理員'
-    //   }, {
-    //     value: '2',
-    //     label: '一般用戶'
-    //   }],
     }
   },
 
   computed: {
     ...mapState('account',['accountPageData']),
     ...mapState('data',['employeeData']),
-    // computed: {
+    //新增表格內，權限選擇將值1顯示為管理員，2顯示為普通用戶
       options() {
         return [
           { value: 1, label: '管理員' },
           { value: 2, label: '普通用戶' },
         ]
       },
-    // },
   },
   methods:{
     ...mapActions('data',['fetchGoodData','fetchCompanyData','fetchEmployeeData','fetchOrderData','fetchReturnData']),
@@ -210,8 +205,14 @@ export default {
     handleClose(){
       this.$refs.form.resetFields();
       this.form.employee.eid = ''
-      // console.log('清空資料')
       this.dialogFormVisible = false;
+    },
+    //點擊新增時操作
+    handleAdd(row){
+      //設定為新增窗口
+      this.modelType = 0;
+      //顯示彈窗
+      this.dialogFormVisible = true;
     },
     //點擊編輯時操作
     handleEdit(row){
@@ -227,13 +228,11 @@ export default {
     },
     //點擊刪除時操作
     handleDelete(row) {
-      // console.log(row)
       this.$confirm(`是否確定要刪除【${row.username}】的資料?`, '提示', {
         confirmButtonText: '確定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        // console.log(row.aid);
         this.fetchDeleteAccount(row.aid).then(() => {
           this.$message({
             type: 'success',
@@ -245,7 +244,6 @@ export default {
             this.fetchGetAccountPageData({'pageNum':this.currentPage});
           }, 200);
         })
-
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -258,7 +256,7 @@ export default {
       this.$refs.form.validate(valid => {
         //驗證通過，執行if內的代碼
         if(valid){
-          // console.log("新增帳號")
+          //將this.form.employee.eid賦值給this.form.eId，方便後台接收
           this.form.eId = this.form.employee.eid
           //新增或修改員工資料
           this.fetchUpdateAccount(this.form);
@@ -268,7 +266,6 @@ export default {
           setTimeout(() => {
             //重新查詢數據庫資料，更新數據
             this.fetchGetAccountPageData({'pageNum':this.currentPage});
-            // this.$refs.form.resetFields();
             this.$refs.form.resetFields();
             this.form.employee.eid = '';
           }, 200);
@@ -283,7 +280,6 @@ export default {
       this.fetchGetAccountPageData(params);
     },
   },
-  //點擊新增時操作
   created() {
     this.fetchGetAccountPageData({'pageNum':1});
     this.fetchEmployeeData();
@@ -292,9 +288,6 @@ export default {
 </script>
 
 <style  scoped>
-/*.el-dialog__header , .el-dialog__body , .el-dialog__footer{*/
-/*  width: 400px;*/
-/*}*/
 .manage {
   height: 100%;
 }

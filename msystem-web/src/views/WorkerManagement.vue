@@ -40,7 +40,7 @@
     </el-dialog>
     <div class="manage-header">
       <!--新增按鈕-->
-      <el-button type="primary" @click="dialogFormVisible = true">+ 新增</el-button>
+      <el-button type="primary" @click="handleAdd">+ 新增</el-button>
       <el-form :inline="true" :model="queryForm">
         <el-form-item>
           <el-input v-model="queryForm.queryKeyword" placeholder="輸入關鍵字" @keyup.enter.native="handlePage(1)"></el-input>
@@ -56,6 +56,7 @@
           :data="employeePageData.content"
           height="90%"
           stripe
+          empty-text="暫無數據"
           style="width: 100%">
         <el-table-column
             prop="name"
@@ -154,6 +155,13 @@ export default {
       this.$refs.form.resetFields();
       this.dialogFormVisible = false;
     },
+    //點擊新增時操作
+    handleAdd(){
+      //設定為編輯窗口
+      this.modelType = 0;
+      //顯示彈窗
+      this.dialogFormVisible = true;
+    },
     //點擊編輯時操作
     handleEdit(row){
       //設定為編輯窗口
@@ -170,7 +178,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(row.eid);
         this.fetchDeleteEmployee(row.eid).then(() => {
           this.$message({
             type: 'success',

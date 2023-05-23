@@ -112,11 +112,12 @@
       </el-form>
     </div>
     <div class="common-tabel">
-      <!--    線材生產表單-->
+      <!--    線材管理表單-->
       <el-table
           :data="goodPageData.content"
           height="90%"
           stripe
+          empty-text="暫無數據"
           style="width: 100%">
         <el-table-column
             prop= "pdate"
@@ -205,7 +206,6 @@ export default {
       currentPage: 1,
       pageSize: 10,
       state:1, //線材狀態 1:已收貨，2:生產中，3：待發貨，4：已發貨
-      modelType:0, //0:分配生產，1:修改生產
       dialogFormVisible: false,//分配/修改彈窗開/關
       dialogFormVisible_check: false,//查看彈窗開/關
       disabled:'',//編輯按鈕是否禁用
@@ -356,8 +356,6 @@ export default {
     },
     //點擊查看時操作
     handleCheck(row){
-      //設定為編輯窗口
-      this.modelType = 0;
       //顯示彈窗
       this.dialogFormVisible = true;
       //【重要】使用深拷貝row資料來回顯到編輯窗口，若不使用深拷貝，則編輯的資料會與表格資料連動，會有錯誤
@@ -367,8 +365,6 @@ export default {
     //點擊彈窗關閉時操作
     handleClose(){
       this.$refs.form.resetFields();
-      // this.form.employee.eid = ''
-      // console.log('清空資料')
       this.dialogFormVisible = false;
     },
     //提交用戶表單
@@ -376,8 +372,6 @@ export default {
       this.$refs.form.validate(valid => {
         //驗證通過，執行if內的代碼
         if(valid){
-          console.log("驗證通過")
-          console.log(this.form)
           this.form.companyId = this.form.company.companyId //將this.form.company.companyId綁定到this.form.companyId，以便後台獲取數據
           //新增訂單資料
           this.fetchUpdateGood(this.form).then(() => {

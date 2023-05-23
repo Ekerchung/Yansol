@@ -1,7 +1,7 @@
 <template>
   <div class="manage">
     <div><span class="title">生產管理</span></div>
-    <!-- 點擊修改按鈕的彈框表單 -->
+    <!-- 點擊編輯按鈕的彈框表單 -->
     <el-dialog
         :visible.sync="dialogFormVisible"
         width="400px"
@@ -61,11 +61,12 @@
       </el-form>
     </div>
     <div class="common-tabel">
-      <!--    線材訂單表單-->
+      <!--    生產訂單表單-->
       <el-table
           :data="this.orderPageData.content"
           height="90%"
           stripe
+          empty-text="暫無數據"
           style="width: 100%">
         <el-table-column
             prop= "oid"
@@ -179,7 +180,6 @@ export default {
       currentPage: 1,
       pageSize: 10,
       state:1, //1:已收貨，2:生產中，3：待發貨，4：已發貨
-      modelType:0, //0:分配生產，1:修改生產
       dialogFormVisible: false,//修改彈窗開/關
       dialogFormVisible_complete: false,//完成彈窗開/關
       completeVisible: true,//開/關隱藏已完成訂單
@@ -247,22 +247,16 @@ export default {
     }
   },
   computed: {
-    // ...mapState('data', ['goodData', 'companyData', 'employeeData', 'orderData', 'returnData', 'countData']),
     ...mapState('data', ['goodData','employeeData']),
-    // ...mapState('line', ['goodPageData']),
     ...mapState('order', ['orderPageData']),
-    // ...mapGetters('order', ['getOrderPageDataFilterComplete']),
   },
   created() {
-    // this.fetchGoodPageData({'pageNum':1,'state':this.state});
     this.fetchEmployeeData();
     this.fetchOrderPageData({'pageNum':1,'completeVisible':this.completeVisible});
 
   },
   methods: {
-    // ...mapActions('data', ['fetchGoodData', 'fetchCompanyData', 'fetchEmployeeData', 'fetchOrderData', 'fetchReturnData']),
     ...mapActions('data', ['fetchEmployeeData']),
-    // ...mapActions('line', ['fetchGoodPageData']),
     ...mapActions('order', ['fetchUpdateOrder', 'fetchOrderPageData', 'fetchDeleteOrder']),
 
     //切換隱藏已完成訂單
@@ -273,7 +267,6 @@ export default {
       //請求查詢分頁信息
       this.fetchOrderPageData(params);
       //使用深拷貝避免vuex的資料被修改
-      // this.orderPageDataFilter = JSON.parse(JSON.stringify(this.orderPageData));
     },
     //切換分頁
     handlePage(pageNum) {
@@ -284,9 +277,10 @@ export default {
     },
     //點擊彈窗關閉時操作
     handleClose() {
+      //清空表格資料
       this.$refs.form.resetFields();
       this.form.employee.eid = ''
-      // console.log('清空資料')
+      //關閉彈窗
       this.dialogFormVisible = false;
     },
     //點擊編輯時操作
@@ -333,8 +327,6 @@ export default {
       this.$refs.form.validate(valid => {
         //驗證通過，執行if內的代碼
         if (valid) {
-          // console.log("驗證通過")
-          // console.log("this.form", this.form)
           //新增或修改訂單資料
           this.fetchUpdateOrder(this.form).then(() => {
             this.$message({
@@ -360,7 +352,6 @@ export default {
     completeVisible:{
       handler(newValue, oldValue){
         //監控completeVisible的值，當值被修改則調用this.handleHidden()
-        // console.log('completeVisible被修改了',newValue,oldValue);
         this.handleHidden();
       }
 

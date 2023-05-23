@@ -1,7 +1,7 @@
 <template>
   <div class="manage">
     <div><span class="title">線材出貨</span></div>
-    <!-- 點擊分配/修改按鈕的彈框表單 -->
+    <!-- 點擊發貨的彈框表單 -->
     <el-dialog
         title="發貨"
         :visible.sync="dialogFormVisible"
@@ -96,11 +96,12 @@
       </el-form>
     </div>
     <div class="common-tabel">
-      <!--    線材生產表單-->
+      <!--    線材出貨表單-->
       <el-table
           :data="goodPageData.content"
           height="90%"
           stripe
+          empty-text="暫無數據"
           style="width: 100%">
         <el-table-column
             prop= "pdate"
@@ -277,13 +278,10 @@ export default {
       this.dialogFormVisible = true;
       //【重要】使用深拷貝row資料來回顯到編輯窗口，若不使用深拷貝，則編輯的資料會與表格資料連動，會有錯誤
       this.form = JSON.parse(JSON.stringify(row));
-      // console.log(this.form)
     },
     //點擊查看時操作
     handleCheck(row){
-
       this.fetchOrderQueryData({'lineId':row.lineId})
-
       //將彈窗設定延時，先等資料查完再顯示表單，否則彈窗高度會只有一行
       setTimeout(() => {
         //顯示彈窗
@@ -292,8 +290,8 @@ export default {
     },
     //點擊發貨彈窗關閉時操作
     handleClose(){
+      //清空彈窗資料
       this.$refs.form.resetFields();
-      // console.log('清空資料')
       this.dialogFormVisible = false;
     },
     //點擊查看彈窗關閉時操作
@@ -305,8 +303,6 @@ export default {
       this.$refs.form.validate(valid => {
         //驗證通過，執行if內的代碼
         if(valid){
-          // console.log("驗證通過")
-          // console.log("this.form",this.form)
           this.form.companyId = this.form.company.companyId;
           //修改訂單資料
           this.fetchUpdateGood(this.form)

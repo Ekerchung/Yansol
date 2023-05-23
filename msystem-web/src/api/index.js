@@ -21,6 +21,12 @@ export const getEmployeeData = () => {
 export const getOrderData = () => {
   return http.get('/order')
 }
+export const getOrderDataByEid = (eid) => {
+  return http.get(`/order/${eid}`)
+}
+export const getOrderDataByEidByDate = (params) => {
+  return http.get('/user/order',{ params:  params })
+}
 export const getOrderQueryData = (params) => {
   return http.get('/order',{ params:  params })
 }
@@ -50,6 +56,9 @@ export const updateAccount = (data) => {
 }
 export const getAccountPageData = (params) => {
   return http.get('/page/account/',{ params:  params })
+}
+export const getAccountData = () => {
+  return http.get('/account')
 }
 export const userLogin = (params) => {
   return http.get('/login', { params:  params })

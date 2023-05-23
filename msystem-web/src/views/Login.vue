@@ -38,9 +38,6 @@ export default {
 
     }
   },
-created() {
-    // console.log('login頁面')
-},
   methods:{
     ...mapActions('menu',['fetchLogin']),
     ...mapMutations('data',['setMenuData']),

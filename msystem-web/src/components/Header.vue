@@ -16,10 +16,10 @@
     <div class="r-content">
       <el-dropdown @command="handleClick">
         <span class="el-dropdown-link">
-            <img class="user" src="../assets/images/female.png" alt="">
+            <img class="user" :src=imgPath alt="">
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>個人中心</el-dropdown-item>
+<!--          <el-dropdown-item command="info">個人中心</el-dropdown-item>-->
           <el-dropdown-item command="cancel">登出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -31,13 +31,18 @@
 import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
 import Cookie from 'js-cookie'
 export default {
-
+  data(){
+    return{
+      username:'',
+      imgPath:'',
+    }
+  },
   methods:{
+    ...mapActions('account',['fetchGetAccountData']),
     //調用store裡menu模塊中的handleMenu方法
     ...mapMutations('menu',['handleMenu']),
     handleClick(command) {
       if (command === 'cancel') {
-        console.log('登出')
         // 清除localStorage中的token
         localStorage.removeItem('token')
         localStorage.removeItem('role')
@@ -58,11 +63,22 @@ export default {
       console.log(this.$route.path);
       return this.$route.path === item.path;
     },
+
   },
   computed:{
-    //映射到store/menu.js中的breadcrumb方法
+    ///映射到store/menu.js中的breadcrumb方法
     ...mapState('menu', ['breadcrumbData']),
+    ...mapState('account',['accountData']),
   },
+  created() {
+    //獲取帳號信息
+    this.username = localStorage.getItem('username');
+    //動態獲取帳號圖示
+    this.imgPath = require(`@/assets/images/${this.username}.png`);
+  },
+  mounted() {
+    this.fetchGetAccountData();
+  }
 }
 </script>
 

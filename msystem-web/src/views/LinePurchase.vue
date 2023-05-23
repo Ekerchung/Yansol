@@ -279,7 +279,6 @@ export default {
 .manage .common-tabel {
   position: relative;
   height: 80vh;
-  /*height: 700px;*/
 }
 
 .manage .common-tabel .pager {
