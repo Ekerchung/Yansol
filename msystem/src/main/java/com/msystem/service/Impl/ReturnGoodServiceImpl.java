@@ -20,6 +20,7 @@ public class ReturnGoodServiceImpl implements ReturnGoodService{
     @Autowired
     private ReturnGoodRepository returnGoodRepository;
 
+
     @Override
     public List<ReturnGood> queryAllReturnGood(){
         List<ReturnGood> returnGoodList = returnGoodRepository.findAll();

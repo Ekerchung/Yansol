@@ -18,16 +18,16 @@ import java.util.Date;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int aId;
-    private String username;
-    private String password;
+    private int aId; //帳號id
+    private String username; //帳號名
+    private String password; //帳號密碼
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date lastLogin;
+    private Date lastLogin; //上次登入時間
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date currentLogin;
+    private Date currentLogin; //最新登入時間
     private int role = 2; //帳號權限 1:admin，2:user
     @OneToOne
     @JoinColumn(name = "e_id", referencedColumnName = "eId")
-    private Employee employee;
+    private Employee employee; //員工信息
 
 }

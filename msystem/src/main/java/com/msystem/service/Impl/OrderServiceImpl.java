@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +38,14 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private GoodRepository goodRepository;
 
+   
+    /**
+     * @titile: queryAllOrder
+     * @description: 查詢全部生產訂單
+     * @return: List<Order> 生產訂單列表
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:46
+     */
     @Override
     @Transactional
     public List<Order> queryAllOrder(){
@@ -43,40 +53,122 @@ public class OrderServiceImpl implements OrderService {
         return orderList;
     }
 
+    /**
+     * @titile: queryOrderByEid
+     * @description: 根據員工id查詢生產訂單
+     * @param eid 員工id
+     * @return: List<Order> 生產訂單列表
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:46
+     */
     @Override
-    @Transactional
-    public Optional<Order> queryOrderById(Integer id){
-        Optional<Order> order = orderRepository.findById(id);
-        return order;
+    public List<Order> queryOrderByEid(Integer eid){
+        List<Order> orderList = orderRepository.findOrdersByEmployee_eIdAndState(eid,1);
+        return orderList;
     }
+   
+    /**
+     * @titile: queryOrderByEidByDate
+     * @description: 根據員工id及輸入日期查詢生產訂單
+     * @param eid 員工id
+     * @param queryDate 查詢的日期
+     * @return: List<Order> 生產訂單列表
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:48
+     */
+    @Override
+    public List<Order> queryOrderByEidByDate(Integer eid, String queryDate){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDate date = LocalDate.parse(queryDate, formatter);
+        int year = date.getYear();
+        int month = date.getMonthValue();
+        List<Order> orderList = orderRepository.findOrdersByEmployee_eIdAndByYearAndMonth(eid,year,month);
+        return orderList;
+    }
+
+    /**
+     * @titile: queryOrderByLineId
+     * @description: 根據線材編號查詢生產訂單
+     * @param lineId 線材編號
+     * @return: List<Order> 生產訂單列表
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:49
+     */
     @Override
     public List<Order> queryOrderByLineId(String lineId){
         List<Order> orderList = orderRepository.findByGood_LineId(lineId);
         return orderList;
     }
 
+    /**
+     * @titile: queryOrderByPage
+     * @description: 查詢生產訂單分頁信息
+     * @param pageable 分頁參數
+     * @return: Page<Order> 生產訂單分頁信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:49
+     */
     @Override
     public Page<Order> queryOrderByPage(PageRequest pageable) {
         Page<Order> orderPage = orderRepository.findAll(pageable);
         return orderPage;
     }
+    /**
+     * @titile: findAllByState
+     * @description: 根據狀態查詢全部生產訂單
+     * @param state 生產訂單狀態
+     * @param pageable 分頁參數
+     * @return: Page<Order> 生產訂單分頁信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:50
+     */
     @Override
     public Page<Order> findAllByState(Integer state, PageRequest pageable) {
         Page<Order> orderPage = orderRepository.findAllByState(state,pageable);
         return orderPage;
     }
 
+    /**
+     * @titile: findByGood_LineIdContainingOrEmployee_eNameContainingOrGood_Company_CompanyNameContaining
+     * @description: 依關鍵字模糊查詢線材
+     * @param lineId 線材編號
+     * @param empName 員工名
+     * @param companyName 廠商名稱
+     * @param pageable 分頁參數
+     * @return: Page<Order> 生產訂單分頁信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:51
+     */
     @Override
     public Page<Order> findByGood_LineIdContainingOrEmployee_eNameContainingOrGood_Company_CompanyNameContaining(String lineId, String empName, String companyName, PageRequest pageable) {
         Page<Order> orderPage = orderRepository.findByGood_LineIdContainingOrEmployee_eNameContainingOrGood_Company_CompanyNameContaining(lineId, empName, companyName, pageable);
         return orderPage;
     }
+    /**
+     * @titile: findByGood_LineIdContainingOrEmployee_eNameContainingOrGood_Company_CompanyNameContainingAndComDateIsNull
+     * @description: 尚未完成的生產訂單依關鍵字模糊查詢線材
+     * @param lineId 線材編號
+     * @param empName 員工名
+     * @param companyName 廠商名稱
+     * @param pageable 分頁參數
+     * @return: Page<Order> 生產訂單分頁信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 03:59
+     */
     @Override
     public Page<Order> findByGood_LineIdContainingOrEmployee_eNameContainingOrGood_Company_CompanyNameContainingAndComDateIsNull(String lineId, String empName, String companyName, PageRequest pageable) {
         Page<Order> orderPage = orderRepository.findByGood_LineIdContainingOrEmployee_eNameContainingOrGood_Company_CompanyNameContainingAndComDateIsNull(lineId, empName, companyName, pageable);
         return orderPage;
     }
 
+    /**
+     * @titile: addOrder
+     * @description: 新增生產訂單
+     * @param orderAddDto 生產訂單信息
+     * @return: ResponseEntity 響應給前端狀態碼及body資訊
+     * @author: Eker
+     * @date: 2023/5/23 下午 04:00
+     */
     @Override
     public ResponseEntity addOrder(OrderAddDto orderAddDto) {
         Order order = new Order();
@@ -99,6 +191,14 @@ public class OrderServiceImpl implements OrderService {
         return ResponseEntity.status(HttpStatus.OK).body("添加成功");
     }
 
+    /**
+     * @titile: updateOrder
+     * @description: 更新生產訂單
+     * @param orderUpdateDto 生產訂單信息
+     * @return: ResponseEntity 響應給前端狀態碼及body資訊
+     * @author: Eker
+     * @date: 2023/5/23 下午 04:01
+     */
     @Override
     public ResponseEntity updateOrder(OrderUpdateDto orderUpdateDto) {
         //獲取訂單ID
@@ -139,6 +239,14 @@ public class OrderServiceImpl implements OrderService {
         return ResponseEntity.status(HttpStatus.OK).body("修改完成");
     }
 
+    /**
+     * @titile: deleteOrder
+     * @description: 刪除生產訂單
+     * @param id 生產訂單id
+     * @return: ResponseEntity 響應給前端狀態碼及body資訊
+     * @author: Eker
+     * @date: 2023/5/23 下午 04:01
+     */
     @Override
     public ResponseEntity deleteOrder(Integer id) {
         //將刪除的分配數量保存回good中待分配數量

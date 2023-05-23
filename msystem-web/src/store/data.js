@@ -1,4 +1,4 @@
-import {getCompanyData, getEmployeeData, getGoodData, getOrderData, getReturnData} from "../api";
+import {getCompanyData, getEmployeeData, getGoodData, getOrderData, getOrderDataByEid, getReturnData} from "../api";
 import _ from 'lodash';
 import moment from "moment";
 
@@ -17,7 +17,6 @@ export default {
         fetchCompanyData(context) {
             return getCompanyData()
                 .then((response) => {
-                    console.log('調用了fetchCompanyData')
                     context.commit('setCompanyData', response.data)
                 })
                 .catch((error) => {
@@ -27,7 +26,6 @@ export default {
         fetchEmployeeData(context) {
             return getEmployeeData()
                 .then((response) => {
-                    console.log('調用了fetchEmployeeData')
                     context.commit('setEmployeeData', response.data)
                 })
                 .catch((error) => {
@@ -37,8 +35,16 @@ export default {
         fetchOrderData(context) {
             return getOrderData()
                 .then((response) => {
-                    console.log('調用了fetchOrderData');
                     context.commit('setOrderData', response.data);
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+        },
+        fetchOrderDataByEid(context,data) {
+            return getOrderDataByEid(data)
+                .then((response) => {
+                    context.commit('setOrderDataByEid', response.data);
                 })
                 .catch((error) => {
                     console.error(error)
@@ -47,7 +53,6 @@ export default {
         fetchReturnData(context) {
             return getReturnData()
                 .then((response) => {
-                    console.log('調用了fetchReturnData')
                     context.commit('setReturnData', response.data)
                 })
                 .catch((error) => {
@@ -217,59 +222,55 @@ export default {
     mutations:{
         setGoodData(state, data) { // 添加goodData數據
             state.goodData = data;
-            console.log('調用了setGoodData')
+        },
+        setOrderDataByEid(state, data) { // 添加orderDataByEid數據
+            state.orderDataByEid = data;
         },
         setCompanyData(state, data) { // 添加companyData數據
             state.companyData = data;
-            console.log('調用了setCompanyData')
         },
         setEmployeeData(state, data) { // 添加employeeData數據
             state.employeeData = data;
-            console.log('調用了setEmployeeData')
         },
         setThisMonthSallary(state, data) { // 添加employeeData數據
             state.thisMonthSallary = data;
-            console.log('調用了setthisMonthSallary')
         },
         setLastMonthSallary(state, data) { // 添加employeeData數據
             state.lastMonthSallary = data;
-            console.log('調用了setlastMonthSallary')
         },
         setOrderData(state, data) { // 添加orderData數據
             state.orderData = data;
-            console.log('調用了setOrderData')
         },
         setReturnData(state, data) { // 添加returnData數據
             state.returnData = data;
-            console.log('調用了setReturnData')
         },
         setCountData(state, data) { // 添加countData數據
             state.countData = data;
-            console.log('調用了setCountData')
         },
         setMenuData(state, data) { // 依據帳號權限添加MenuData數據
-            console.log('setMenuData.data',data)
             if(localStorage.getItem('menuData')){
-                console.log('11調用了setMenuData')
                 state.menuData = JSON.parse(localStorage.getItem('menuData'));
             }else if(data === 1){
-                console.log('22調用了setMenuData')
                 state.menuData = state.adminMenuData;//將管理員權限的菜單賦予menuData
                 localStorage.setItem('menuData',JSON.stringify(state.adminMenuData));//保存菜單內容到localStorage中，避免刷新失去Vuex中的menuData，失去導航頁面
             }else if(data === 2){
-                console.log('33調用了setMenuData')
                 state.menuData = state.userMenuData;//將一般使用者權限的菜單賦予menuData
                 localStorage.setItem('menuData',JSON.stringify(state.userMenuData));//保存菜單內容到localStorage中，避免刷新失去Vuex中的menuData，失去導航頁面
             }
-            console.log('44調用了setMenuData')
         },
     },
     state:{
+        //線材資料
         goodData: [],
+        //廠商資料
         companyData: [],
+        //員工資料
         employeeData: [],
+        //生產訂單資料
         orderData: [],
-        returnData: [],
+        //員工生產訂單資料
+        orderDataByEid: [],
+        // returnData: [],
         countData: [
             {
                 name: "今日進貨",
@@ -320,6 +321,7 @@ export default {
                 color: "#5ab1ef",
             },
         ],
+        //管理員導航欄資料
         adminMenuData:[
 
             {
@@ -417,6 +419,7 @@ export default {
                 ]
             }
         ],
+        //一般用戶導航欄資料
         userMenuData:[
 
             {
@@ -428,30 +431,31 @@ export default {
                 meta:{role: ['2']}
             },
             {
-                path: '/lineprocess',
+                path: '/userlineprocess',
                 name: 'userlineprocess',
                 label: '線材生產',
                 icon: 'video-play',
-                url: 'management/lineprocess',
+                url: 'management/userlineprocess',
                 meta:{role: ['2']}
             },
             {
                 path: '/prepayroll',
                 name: 'prepayroll',
-                label: '當月薪資試算',
+                label: '薪資試算',
                 icon: 'user',
                 url: 'prepayroll/prepayroll',
                 meta:{role: ['2']}
             },
-            {
-                path: '/payroll',
-                name: 'user',
-                label: '薪資紀錄',
-                icon: 'user',
-                url: 'payroll/payroll',
-                meta:{role: ['2']}
-            },
+            // {
+            //     path: '/payroll',
+            //     name: 'user',
+            //     label: '薪資紀錄',
+            //     icon: 'user',
+            //     url: 'payroll/payroll',
+            //     meta:{role: ['2']}
+            // },
         ],
+        //菜單資料
         menuData:[],
 
     }

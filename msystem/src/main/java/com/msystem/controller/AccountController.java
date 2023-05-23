@@ -34,6 +34,15 @@ public class AccountController {
     @Autowired
     EmployeeService employeeService;
 
+    /**
+     * @titile: login
+     * @description: 驗證登入
+     * @param username 帳號
+     * @param password 密碼
+     * @return: ResponseEntity 響應給前端狀態碼及body資訊
+     * @author: Eker
+     * @date: 2023/5/23 下午 04:26
+     */
     @GetMapping(value = "/login")
     public ResponseEntity login(@RequestParam String username,@RequestParam String password){
         Account account = accountService.login(username, password);
@@ -56,11 +65,27 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("帳號密碼有誤");
     }
 
+    /**
+     * @titile: queryAllAccount
+     * @description: 查詢全部帳號信息
+     * @return: List<Account> 帳號信息列表
+     * @author: Eker
+     * @date: 2023/5/23 下午 04:27
+     */
     @GetMapping(value = "/account")
     public List<Account> queryAllAccount(){
         List<Account> accountList = accountService.queryAllAccount();
         return accountList;
     }
+    /**
+     * @titile: queryAccountByPage
+     * @description: 查詢帳號分頁信息
+     * @param pageNum 頁碼
+     * @param queryKeyWord 查詢關鍵字
+     * @return: Page<Account> 帳號分頁信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 04:27
+     */
     @GetMapping(value = "/page/account/")
     public Page<Account> queryAccountByPage(@RequestParam Integer pageNum, @RequestParam(required = false) String queryKeyWord){
         //默認頁碼為0，PageRequest頁碼從0開始
@@ -80,14 +105,28 @@ public class AccountController {
             String username = queryKeyWord;
             accountPage = accountService.findByUsernameContaining(username,pageable);
         }
-
         return accountPage;
     }
+    /**
+     * @titile: queryAccountById
+     * @description: 依id查詢帳號信息
+     * @param id 帳號id
+     * @return: Account 帳號信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 04:36
+     */
     @GetMapping(value = "/account/{id}")
     public Account queryAccountById(@PathVariable("id") Integer id){
         Optional<Account> account = accountService.queryAccountById(id);
         return account.orElse(null);
     }
+    /**
+     * @titile: updateAccount
+     * @description: 更新帳號信息
+     * @param accountDto 帳號信息
+     * @author: Eker
+     * @date: 2023/5/23 下午 04:37
+     */
     @PutMapping(value = "/account")
     public void updateAccount(@RequestBody AccountDto accountDto){
         System.out.println(accountDto);
@@ -101,6 +140,13 @@ public class AccountController {
         account.setEmployee(employee);
         accountService.updateAccount(account);
     }
+    /**
+     * @titile: deleteAccount
+     * @description: 刪除帳號信息
+     * @param id 帳號id
+     * @author: Eker
+     * @date: 2023/5/23 下午 04:37
+     */
     @DeleteMapping(value = "/account/{id}")
     public void deleteAccount(@PathVariable("id") Integer id){
         accountService.deleteAccount(id);

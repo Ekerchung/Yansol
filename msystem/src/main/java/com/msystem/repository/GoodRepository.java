@@ -18,10 +18,14 @@ import java.util.List;
  * @version: V1.0
  */
 public interface GoodRepository  extends JpaRepository<Good, Integer> {
+    //依線材編號查詢線材信息
     Good findBylineId(String lineId);
+    //依狀態查詢線材信息
     Page<Good> findByState(Integer state, Pageable pageable);
-
+    //依關鍵字模糊查詢某狀態下的線材信息
     @Query("SELECT g FROM Good g WHERE g.state = :state AND (g.lineName LIKE %:lineName% OR g.lineType LIKE %:lineType% OR g.lineId LIKE %:lineId% OR g.company.companyName LIKE %:companyName%)")
     Page<Good> findGoodsByStateAndLineNameOrLineTypeOrLineIdOrCompanyNameContaining(@Param("state") Integer state, @Param("lineName") String lineName, @Param("lineType") String lineType, @Param("lineId") String lineId, @Param("companyName") String companyName, Pageable pageable);
+    //依關鍵字模糊查詢線材信息
     Page<Good> findGoodsByLineNameContainingOrLineTypeContainingOrLineIdContainingOrCompany_CompanyNameContaining(String lineName, String lineType, String lineId, String companyName, Pageable pageable);
+
 }

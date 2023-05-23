@@ -19,13 +19,13 @@ import java.util.Date;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int eId;
+    private int eId; //員工id
     @JsonProperty("name")
-    private String eName;
-    private String gender;
+    private String eName; //員工姓名
+    private String gender; //性別
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date birthday;
-    private String phone;
-    private String address;
+    private Date birthday; //生日
+    private String phone; //電話
+    private String address; //地址
 
 }

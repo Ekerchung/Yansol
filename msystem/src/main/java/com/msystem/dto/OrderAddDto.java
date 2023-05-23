@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import java.math.BigDecimal;
 
 /**
- * @Description: OrderDto容器類
+ * @Description: Order的Dto容器
  * @author: Eker
  * @date: 2023/5/15 下午 11:14
  * @version: V1.0

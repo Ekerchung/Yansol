@@ -1,5 +1,5 @@
 <template>
-    <h3>薪資紀錄</h3>
+<h3>薪資紀錄</h3>
 </template>
 
 <script>

@@ -4,16 +4,18 @@ import Home from '../views/Home'
 import UserHome from '../views/UserHome'
 import LineManagement from '../views/LineManagement'
 import LineProcess from '../views/LineProcess'
+import UserLineProcess from '../views/UserLineProcess'
 import LineProcessManagement from '../views/LineProcessManagement'
 import LinePurchase from '../views/LinePurchase'
-import LineReturn from '../views/LineReturn'
+// import LineReturn from '../views/LineReturn'
 import LineShipping from '../views/LineShipping'
 import Login from '../views/Login'
-import Payroll from '../views/Payroll'
+// import Payroll from '../views/Payroll'
 import PayrollManagement from '../views/PayrollManagement'
 import PrePayroll from '../views/PrePayroll'
 import WorkerManagement from '../views/WorkerManagement'
 import AccountManagement from '../views/AccountManagement'
+// import UserInfo from '../views/UserInfo'
 import Main from '../views/Main'
 
 //解決點擊兩次element ui的麵包屑報錯
@@ -31,10 +33,11 @@ const router = new VueRouter({
             children:[
                 {path: 'home',component: Home,meta:{role: ['1']}},
                 {path: 'userhome',component: UserHome,meta:{role: ['2']}},
-                {path: 'lineprocess',component: LineProcess,meta:{role: ['1', '2']}},
+                {path: 'lineprocess',component: LineProcess,meta:{role: ['1']}},
+                {path: 'userlineprocess',component: UserLineProcess,meta:{role: ['2']}},
                 {path: 'lineProcessManagement',component: LineProcessManagement,meta:{role: ['1', '2']}},
                 {path: 'prepayroll',component: PrePayroll,meta:{role:['2']}},
-                {path: 'payroll',component: Payroll,meta:{role:['2']}},
+                // {path: 'payroll',component: Payroll,meta:{role:['2']}},
                 {path: 'linepurchase',component: LinePurchase,meta:{role:['1']}},
                 {path: 'lineshipping',component: LineShipping,meta:{role:['1']}},
                 // {path: 'linereturn',component: LineReturn,meta:{role:['1']}},
@@ -42,6 +45,7 @@ const router = new VueRouter({
                 {path: 'payrollmanagement',component: PayrollManagement,meta:{role:['1']}},
                 {path: 'workermanagement',component: WorkerManagement,meta:{role:['1']}},
                 {path: 'accountManagement',component: AccountManagement,meta:{role:['1']}},
+                // {path: 'userInfo',component: UserInfo,meta:{role:['1', '2']}},
             ]
         },
         {
@@ -64,32 +68,5 @@ router.beforeEach((to, from, next) => {
             next()  //正常訪問
         }
 })
-// router.beforeEach((to, from, next) => {
-//     let token = localStorage.getItem('token');
-//     let role = localStorage.getItem('role');
-//     if (!token && to.path !== '/login') {
-//         // 若没获取到token，则跳转到登录页面
-//         next({ path: '/login' })
-//     } else {
-//         // 获取token的过期时间
-//         let expireTime = localStorage.getItem('expireTime');
-//         if (!expireTime || Date.now() > expireTime) {
-//             // 若过期时间不存在或已过期，则跳转到登录页面
-//             localStorage.removeItem('token');
-//             localStorage.removeItem('role');
-//             localStorage.removeItem('expireTime');
-//             next({ path: '/login' });
-//         } else if (token && to.path === '/login') {
-//             // 若当前路由为登录页，则跳转到首页
-//             next({ path: `${role === '1' ? '/home' : '/userhome' }` });
-//         } else if (token && !to.meta.role.includes(role) && to.path !== '/home') {
-//             // 若当前用户权限不足，则跳转到首页
-//             next({ path: `${role === '1' ? '/home' : '/userhome' }` });
-//         } else {
-//             // 否则正常访问
-//             next();
-//         }
-//     }
-// });
 
 export default router;

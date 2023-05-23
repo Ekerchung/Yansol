@@ -17,19 +17,20 @@ import java.util.Optional;
  * @version: V1.0
  */
 public interface GoodService {
-    public void addOrder();
-    public Optional<Good> queryGoodById(int id);
-
+    //依線材編號查詢線材信息
+    Optional<Good> queryGoodById(int id);
+    //查詢全部線材信息
     List<Good> queryAllGood();
-
+    //新增線材信息
     ResponseEntity addGood(List<GoodDto> goodDtoList);
-
+    //依線材狀態查詢線材分頁信息
     Page<Good> queryGoodByPageByState(PageRequest pageable,Integer state);
+    //依狀態及關鍵字模糊查詢線材信息
     Page<Good> findGoodsByStateAndLineNameOrLineTypeOrLineIdOrCompanyNameContaining(Integer state, String lineName, String lineType, String lineId, String companyName, Pageable pageable);
-
+    //更新線材信息
     ResponseEntity updateGood(GoodDto goodDto);
-
+    //查詢全部線材分頁信息
     Page<Good> queryAllGoodPage(PageRequest pageable);
-
+    //依關鍵字模糊查詢線材信息
     Page<Good> findGoodsByLineNameContainingOrLineTypeContainingOrCompany_CompanyNameContaining(String lineName, String lineType, String lineId, String companyName, Pageable pageable);
 }
