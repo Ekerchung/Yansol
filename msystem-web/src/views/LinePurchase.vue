@@ -39,9 +39,9 @@
               width="180">
             <template slot-scope="scope">
               <el-form-item
-                  :prop="'tableData.' + scope.$index + '.companyName'"
-                  :rules='purchaseForm.rules.companyName'>
-                <el-select v-model="purchaseForm.tableData[scope.row.id-1].companyName" placeholder="請選擇">
+                  :prop="'tableData.' + scope.$index + '.companyId'"
+                  :rules='purchaseForm.rules.companyId'>
+                <el-select v-model="purchaseForm.tableData[scope.row.id-1].companyId" placeholder="請選擇">
                   <el-option
                       v-for="item in companyData"
                       :key="item.companyId"
@@ -123,7 +123,7 @@
                   :prop="'tableData.' + scope.$index + '.unitPrice'"
                   :rules='purchaseForm.rules.unitPrice'>
                 <el-input v-model="purchaseForm.tableData[scope.row.id-1].unitPrice"
-                          oninput="value=value.replace(/[^\d]/g,'')"
+                          oninput="value=value.trim().replace(/[^\d.]/g,'')"
                           placeholder="請輸入單價">
 
                 </el-input>
@@ -156,6 +156,7 @@ export default {
         tableData: [{
           pDate: '',
           companyName: '',
+          companyId: '',
           lineId: '',
           lineType: '',
           lineName: '',
@@ -164,7 +165,7 @@ export default {
         },],
 
         rules: {
-          companyName: [
+          companyId: [
             { required: true, message: '請選擇進貨廠商', trigger: 'change' }
           ],
           lineId: [

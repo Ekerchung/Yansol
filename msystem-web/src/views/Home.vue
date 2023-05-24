@@ -195,7 +195,10 @@ export default {
           data: [this.lastYear.toString(),this.currentYear.toString()]
         },
         xAxis: {
-          data: this.companySalesList.map(company => company.companyName)
+          data: this.companySalesList.map(company => company.companyName),
+          axisLabel: {
+            interval: 0 // 避免x軸過長，文字消失
+          }
         },
         yAxis: {
           type: 'value',

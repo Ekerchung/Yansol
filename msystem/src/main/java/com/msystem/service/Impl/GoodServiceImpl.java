@@ -98,6 +98,7 @@ public class GoodServiceImpl implements GoodService {
                     good.setLineType(goodDtoList.get(i).getLineType());
                     good.setPDate(goodDtoList.get(i).getPDate());
                     good.setTotalCount(goodDtoList.get(i).getTotalCount());
+                    good.setRemainingCount(goodDtoList.get(i).getTotalCount());
                     good.setUnitPrice(goodDtoList.get(i).getUnitPrice());
                     good.setCompany(optionalCompany.orElse(null));
                     good.setState(1);

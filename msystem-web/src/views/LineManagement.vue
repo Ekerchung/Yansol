@@ -65,39 +65,63 @@
       </div>
     </el-dialog>
     <!-- 點擊查看按鈕的彈框表單 -->
-    <el-dialog
-        :visible.sync="dialogFormVisible_check"
-        width="400px"
-        :before-close="handleClose">
-      <el-form :model="form_check" ref="form" label-width="100px" style="width: 350px">
-        <el-form-item label="線材編號" prop="lineId">
-          <el-input v-model="form.lineId" :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="生產數量" prop="oCount">
-          <el-input v-model="form.oCount" :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="生產單價" prop="oPrice">
-          <el-input v-model="form.oPrice" :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="生產總價" prop="oTotalPrice">
-          <el-input v-model="form.oTotalPrice" :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="生產員工" prop="eId">
-          <el-input v-model="form.oTotalPrice" :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="生產員工" prop="eId">
-          <el-input v-model="form.eId" :disabled="true"></el-input>
-          <!--          <el-select v-model="form.eId" style="width: 250px" placeholder="請選擇員工">-->
-          <!--            <el-option v-for="emp in employeeData" :label= "`${emp.eid}_${emp.name}`"  :value=emp.eid :key="emp.eid"></el-option>-->
-          <!--          </el-select>-->
-        </el-form-item>
-        <el-form-item label="完成時間" prop="comDate">
-          <el-input v-model="form.comDate" :disabled="true"></el-input>
-        </el-form-item>
-      </el-form>
+    <el-dialog class="checkTable"
+               :visible.sync="dialogFormVisible_check"
+               width="1400px"
+               :before-close="handleClose_check">
+      <el-table
+          :data="this.orderQueryData"
+          height="90%"
+          stripe
+          style="width: 100%">
+        <el-table-column
+            prop= "oid"
+            label="訂單編號"
+            width="120">
+        </el-table-column>
+        <el-table-column
+            prop="good.company.companyName"
+            label="進貨廠商"
+            width="180">
+        </el-table-column>
+        <el-table-column
+            prop="good.lineId"
+            label="線材編號"
+            width="180">
+        </el-table-column>
+        <el-table-column
+            prop="odate"
+            label="訂單日期"
+            width="180">
+        </el-table-column>
+        <el-table-column
+            prop="ocount"
+            label="訂單數量"
+            width="120">
+        </el-table-column>
+        <el-table-column
+            prop="ounitPrice"
+            label="訂單單價"
+            width="120">
+        </el-table-column>
+        <el-table-column
+            prop="ototalPrice"
+            label="訂單總價"
+            width="120">
+        </el-table-column>
+        <el-table-column
+            prop="employee.name"
+            label="生產員工"
+            width="120">
+        </el-table-column>
+        <el-table-column
+            prop="comDate"
+            label="完成日期"
+            width="180">
+        </el-table-column>
+      </el-table>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="handleClose">取 消</el-button>
-        <el-button type="primary" @click="submit">確 定</el-button>
+        <el-button type="primary" @click="handleClose_check">關 閉</el-button>
       </div>
     </el-dialog>
     <div class="manage-header">
@@ -300,6 +324,7 @@ export default {
   computed: {
     ...mapState('data', ['goodData', 'companyData', 'employeeData', 'orderData', 'returnData', 'countData']),
     ...mapState('line', ['goodPageData']),
+    ...mapState('order', ['orderQueryData']),
   },
   created() {
     this.fetchGoodPageData({'pageNum':1});
@@ -309,7 +334,7 @@ export default {
   methods: {
     ...mapActions('data', ['fetchGoodData', 'fetchCompanyData', 'fetchEmployeeData', 'fetchOrderData', 'fetchReturnData']),
     ...mapActions('line', ['fetchGoodPageData','fetchUpdateGood']),
-    ...mapActions('order', ['fetchAddOrder']),
+    ...mapActions('order', ['fetchAddOrder','fetchOrderQueryData']),
     //table中顯示線材狀態
     getStateText() {
       const state = this.form.state
@@ -356,16 +381,21 @@ export default {
     },
     //點擊查看時操作
     handleCheck(row){
-      //顯示彈窗
-      this.dialogFormVisible = true;
-      //【重要】使用深拷貝row資料來回顯到編輯窗口，若不使用深拷貝，則編輯的資料會與表格資料連動，會有錯誤
-      this.form = JSON.parse(JSON.stringify(row));
-      // console.log(this.form)
+      this.fetchOrderQueryData({'lineId':row.lineId})
+      //將彈窗設定延時，先等資料查完再顯示表單，否則彈窗高度會只有一行
+      setTimeout(() => {
+        //顯示彈窗
+        this.dialogFormVisible_check = true;
+      }, 100);
     },
     //點擊彈窗關閉時操作
     handleClose(){
       this.$refs.form.resetFields();
       this.dialogFormVisible = false;
+    },
+    //點擊查看彈窗關閉時操作
+    handleClose_check(){
+      this.dialogFormVisible_check = false;
     },
     //提交用戶表單
     submit(){
